@@ -59,9 +59,11 @@ We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/k
 >
 >7. $ npm install
 >
->8. $ yarn dev
+>8. Change the file ".env.example" into ".env", modify the parameters in the .env file.
 >
->9. check http://localhost:3000
+>9. $ yarn dev
+>
+>10. check http://localhost:3000
 
 
 # Join Us

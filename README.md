@@ -64,7 +64,7 @@ We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/k
 >9. check http://localhost:3000
 
 
-# About Us
+# Join Us
 We are team from MeetUGo.Com platform,  which is a social calendar. We find out people have need to find more useful events in their social network. And we upgrade the idea to more formal links.
 
 We are in the early stage. Contact us via huanry@mail.meetugo.com

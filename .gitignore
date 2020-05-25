@@ -1,7 +1,7 @@
 #ignore files
 .env
 .DS_Store
-
+/node_modules
 
 
 #ignore files end with

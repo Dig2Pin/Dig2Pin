@@ -4,10 +4,13 @@ const { Keystone } = require('@keystonejs/keystone');
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
+const { NextApp } = require('@keystonejs/app-next');
+const { StaticApp } = require('@keystonejs/app-static');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
 const adapterConfig = { mongoUri: process.env.MONGODB_URL };
 const initialiseData = require('./data/initial-data');
+const { staticRoute, staticPath, distDir } = require('./config');
 
 
 const keystone = new Keystone({
@@ -42,10 +45,13 @@ const adminApp = new AdminUIApp({
 module.exports = {
   keystone,
   apps: [
+
     new GraphQLApp(),
     adminApp,
-    //new AdminUIApp({ enableDefaultRoute: true }),
+    new StaticApp({ path: staticRoute, src: staticPath }),
+    new NextApp({ dir: 'site' }),
   ],
+    distDir,
 };
 
 

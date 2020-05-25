@@ -1,0 +1,13 @@
+#ignore files
+.env
+.DS_Store
+.gitattributes
+CHANGELOG.md
+package-lock.json
+yarn.lock
+
+/node_modules
+/dist
+
+#ignore files end with
+*.pem

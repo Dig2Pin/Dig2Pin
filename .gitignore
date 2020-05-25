@@ -1,6 +1,12 @@
 #ignore files
 .env
 .DS_Store
+.gitignore
+.gitattributes
+CHANGELOG.md
+package-lock.json
+yarn.lock
+
 /node_modules
 
 

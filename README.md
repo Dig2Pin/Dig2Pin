@@ -43,6 +43,27 @@ AAAAA --> AAAAAA[Release beta version.]
 # How we build?
 We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
 
+# Run the project
+
+>1. Make sure you have Node.js >= 10.x by $ node --version
+>
+>2. Make sure you have npm by $ npm --version
+>
+>3. Make sure you have yarn by $ yarn --version
+>
+>4. MongoDB >= 4.x; $ mongod
+>
+>5. Open another window $ git clone https://github.com/Dig2Pin/Dig2Pin
+>
+>6. $ cd Dig2Pin
+>
+>7. $ npm install
+>
+>8. $ yarn dev
+>
+>9. check http://localhost:3000
+
+
 # About Us
 We are team from MeetUGo.Com platform,  which is a social calendar. We find out people have need to find more useful events in their social network. And we upgrade the idea to more formal links.
 

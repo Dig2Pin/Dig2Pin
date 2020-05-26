@@ -40,10 +40,9 @@ AAAAA --> AAAAAA[Release beta version.]
 
 ```
 
-# How we build?
-We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
+# build with us
 
-# Run the project
+### We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
 
 >1. Make sure you have Node.js >= 10.x by $ node --version
 >
@@ -65,6 +64,7 @@ We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/k
 >
 >10. check http://localhost:3000
 
+files inside site folder is copy from keystone blog example, need to modify.
 
 # Join Us
 We are team from MeetUGo.Com platform,  which is a social calendar. We find out people have need to find more useful events in their social network. And we upgrade the idea to more formal links.

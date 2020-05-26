@@ -1,4 +1,3 @@
-require('dotenv').config();
 const {
   Text,
   Slug,
@@ -23,5 +22,6 @@ exports.User = {
 
     isAdmin: { type: Checkbox },
     joined: { type: DateTime, defaultValue: new Date(Date.now()).toISOString()},
-  }
+  },
+  labelResolver: item => `${item.userName} <${item.email}>`,
 }

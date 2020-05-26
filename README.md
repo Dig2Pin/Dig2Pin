@@ -44,6 +44,7 @@ AAAAA --> AAAAAA[Release beta version.]
 
 ### We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
 
+```
 >1. Make sure you have Node.js >= 10.x by $ node --version
 >
 >2. Make sure you have npm by $ npm --version
@@ -63,6 +64,8 @@ AAAAA --> AAAAAA[Release beta version.]
 >9. $ yarn dev
 >
 >10. check http://localhost:3000
+
+```
 
 files inside site folder is copy from keystone blog example, need to modify.
 

@@ -62,9 +62,8 @@ export default withApollo(() => {
       <Header />
       <section css={{ margin: '48px 0' }}>
         <h2>About</h2>
-        <p>
-          This blog was created in KeystoneJS, a fantastic open source framework for developing
-          database-driven websites, applications and APIs in Node.js and GraphQL.
+        <p>Dig2Pin is a social bookmarking platform to discover, pin, 
+        and comment interesting instant links in your friend circle. Check our github page to join us.
         </p>
       </section>
 

@@ -50,7 +50,7 @@ const AUTHENTICATED_USER = gql`
 `;
 
 export default withApollo(() => {
-  const [email, setEmail] = useState('user@keystonejs.com');
+  const [email, setEmail] = useState('email to huanry@mail.meetugo.com for our alpha test');
   const [password, setPassword] = useState('password');
 
   const { data: { authenticatedUser } = {}, loading, error } = useQuery(AUTHENTICATED_USER);

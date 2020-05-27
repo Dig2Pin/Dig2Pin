@@ -18,7 +18,7 @@ import { withApollo } from '../../lib/apollo';
 const ADD_COMMENT = gql`
   mutation AddComment($body: String!, $postId: ID!, $posted: DateTime!) {
     createComment(
-      data: { body: $body, url: { connect: { slug: $postId } }, posted: $posted }
+      data: { body: $body, url: { connect: { id: $postId } }, posted: $posted }
     ) {
       id
       body

@@ -32,9 +32,9 @@ const Input = styled.input({
   border: '1px solid hsl(200,20%,70%)',
 });
 
-const ADD_POST = gql`
-  mutation AddPost($title: String!, $body: String!, $posted: DateTime!, $image: Upload!) {
-    createPost(data: { title: $title, body: $body, posted: $posted, image: $image }) {
+const ADD_URL = gql`
+  mutation AddUrl($url:String!,$title: String!, $body: String!, $posted: DateTime!) {
+    createUrl(data: {url: $url, title: $title, description: $body, posted: $posted}) {
       id
       slug
     }
@@ -42,9 +42,9 @@ const ADD_POST = gql`
 `;
 
 export default withApollo(() => {
+  const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [image, setImage] = useState('');
   const [slug, setSlug] = useState('');
 
   const { data, loading: userLoading, error: userError } = useQuery(gql`
@@ -55,9 +55,9 @@ export default withApollo(() => {
     }
   `);
 
-  const [createPost, { error: saveError, loading: savingPost }] = useMutation(ADD_POST, {
+  const [createUrl, { error: saveError, loading: savingPost }] = useMutation(ADD_URL, {
     update: (cache, { data: { createPost } }) => {
-      setSlug(createPost.slug);
+      setSlug(createUrl.slug);
     },
   });
 
@@ -71,7 +71,7 @@ export default withApollo(() => {
         <Link href="/" passHref>
           <a css={{ color: 'hsl(200,20%,50%)', cursor: 'pointer' }}>{'< Go Back'}</a>
         </Link>
-        <h1>New Post</h1>
+        <h1>Share an Url</h1>
 
         {slug && (
           <Banner style="success">
@@ -105,11 +105,11 @@ export default withApollo(() => {
               disabled={formDisabled}
               onSubmit={e => {
                 e.preventDefault();
-                createPost({
+                createUrl({
                   variables: {
+                    url,
                     title,
                     body,
-                    image,
                     posted: new Date(),
                   },
                 });
@@ -118,6 +118,18 @@ export default withApollo(() => {
                 setBody('');
               }}
             >
+              <FormGroup>
+                <Label htmlFor="url">Url:</Label>
+                <Input
+                  disabled={formDisabled}
+                  type="text"
+                  name="url"
+                  value={url}
+                  onChange={event => {
+                    setUrl(event.target.value);
+                  }}
+                />
+              </FormGroup>
               <FormGroup>
                 <Label htmlFor="title">Title:</Label>
                 <Input
@@ -131,7 +143,7 @@ export default withApollo(() => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label htmlFor="body">Body:</Label>
+                <Label htmlFor="body">Description:</Label>
                 <textarea
                   disabled={formDisabled}
                   css={{
@@ -147,18 +159,6 @@ export default withApollo(() => {
                   value={body}
                   onChange={event => {
                     setBody(event.target.value);
-                  }}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label htmlFor="image">Image URL:</Label>
-                <Input
-                  disabled={formDisabled}
-                  type="file"
-                  name="image"
-                  // value={image}
-                  onChange={event => {
-                    setImage(event.target.files[0]);
                   }}
                 />
               </FormGroup>

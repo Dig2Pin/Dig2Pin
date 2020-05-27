@@ -34,6 +34,7 @@
     "apollo-upload-client": "^13.0.0",
     "cross-env": "^7.0.0",
     "dotenv": "^8.2.0",
-    "isomorphic-unfetch": "^3.0.0"
+    "isomorphic-unfetch": "^3.0.0",
+    "link-cleaner": "^1.0.0"
   }
 }

@@ -34,7 +34,7 @@ const Post = ({ post }) => {
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
               Posted by {post.author ? post.author.userName : 'someone'} on{' '}
-              {format(post.posted, 'DD/MMM/YYYY')}
+              {format(parseISO(post.posted), 'dd/MM/yyyy')}
             </p>
           </div>
         </article>
@@ -46,7 +46,8 @@ const Post = ({ post }) => {
 export default withApollo(() => {
   const { data, loading, error } = useQuery(gql`
     query {
-      allUrls{
+      allUrls(sortBy: posted_DESC){
+        slug
         title
         url
         description

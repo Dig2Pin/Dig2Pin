@@ -45,25 +45,25 @@ AAAAA --> AAAAAA[Release beta version.]
 ### We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
 
 ```
->1. Make sure you have Node.js >= 10.x by $ node --version
->
->2. Make sure you have npm by $ npm --version
->
->3. Make sure you have yarn by $ yarn --version
->
->4. MongoDB >= 4.x; $ mongod
->
->5. Open another window $ git clone https://github.com/Dig2Pin/Dig2Pin
->
->6. $ cd Dig2Pin
->
->7. $ npm install
->
->8. Change the file ".env.example" into ".env", modify the parameters in the .env file.
->
->9. $ yarn dev
->
->10. check http://localhost:3000
+1. Make sure you have Node.js >= 10.x by $ node --version
+
+2. Make sure you have npm by $ npm --version
+
+3. Make sure you have yarn by $ yarn --version
+
+4. MongoDB >= 4.x; $ mongod
+
+5. Open another window $ git clone https://github.com/Dig2Pin/Dig2Pin
+
+6. $ cd Dig2Pin
+
+7. $ npm install
+
+8. Change the file ".env.example" into ".env", modify the parameters in the .env file.
+
+9. $ yarn dev
+
+10. check http://localhost:3000
 
 ```
 

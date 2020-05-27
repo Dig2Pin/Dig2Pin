@@ -24,16 +24,17 @@ const Post = ({ post }) => {
           cursor: 'pointer',
           borderRadius: 6,
           overflow: 'hidden',
+          textDecoration: 'none',
         }}
       >
         {post.image ? <img src={post.image.publicUrl} css={{ width: '100%' }} /> : null}
         <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0 }}>{post.title}</h3>
-          <section dangerouslySetInnerHTML={{ __html: post.body }} />
+          <h3 css={{ marginTop: 0, color:'black',}}>{post.title}</h3>
+          <section dangerouslySetInnerHTML={{ __html: post.description }} />
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-              Posted by {post.author ? post.author.name : 'someone'} on{' '}
-              {format(parseISO(post.posted), 'dd/MM/yyyy')}
+              Posted by {post.author ? post.author.userName : 'someone'} on{' '}
+              {format(post.posted, 'DD/MMM/YYYY')}
             </p>
           </div>
         </article>
@@ -45,18 +46,12 @@ const Post = ({ post }) => {
 export default withApollo(() => {
   const { data, loading, error } = useQuery(gql`
     query {
-      allPosts {
+      allUrls{
         title
-        id
-        body
+        url
+        description
         posted
-        slug
-        image {
-          publicUrl
-        }
-        author {
-          name
-        }
+        author{userName}
       }
     }
   `);
@@ -80,8 +75,8 @@ export default withApollo(() => {
           <p>Error!</p>
         ) : (
           <div>
-            {data.allPosts.length ? (
-              data.allPosts.map(post => <Post post={post} key={post.id} />)
+            {data.allUrls.length ? (
+              data.allUrls.map(post => <Post post={post} key={post.id} />)
             ) : (
               <p>No posts to display</p>
             )}

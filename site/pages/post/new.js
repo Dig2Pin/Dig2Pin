@@ -1,3 +1,5 @@
+const removeUrlGarbage = require('link-cleaner');
+
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import Link from 'next/link';
@@ -126,7 +128,7 @@ export default withApollo(() => {
                   name="url"
                   value={url}
                   onChange={event => {
-                    setUrl(event.target.value);
+                    setUrl(removeUrlGarbage(event.target.value));
                   }}
                 />
               </FormGroup>

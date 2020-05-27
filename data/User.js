@@ -25,3 +25,5 @@ exports.User = {
   },
   labelResolver: item => `${item.userName} <${item.email}>`,
 }
+
+const isAdmin = ({ authentication: { item: user } }) => !!user && !!user.isAdmin;

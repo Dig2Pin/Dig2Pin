@@ -23,14 +23,13 @@ const keystone = new Keystone({
 //import schema start
 const {User} = require('./data/User.js');
 const {Url} = require('./data/Url.js');
+const {Comment} = require('./data/Comment.js');
 //import schema end
 
 //create lists
 keystone.createList('User', User);
 keystone.createList('Url', Url);
-
-
-
+keystone.createList('Comment', Comment);
 
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,
@@ -39,6 +38,7 @@ const authStrategy = keystone.createAuthStrategy({
 
 const adminApp = new AdminUIApp({
   adminPath: '/admin',
+  hooks: require.resolve('./admin/'),
   isAccessAllowed: ({ authentication: { item: user } }) => !!user && !!user.isAdmin,
   authStrategy,
 });

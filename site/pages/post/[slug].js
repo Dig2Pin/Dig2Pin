@@ -18,15 +18,12 @@ import { withApollo } from '../../lib/apollo';
 const ADD_COMMENT = gql`
   mutation AddComment($body: String!, $postId: ID!, $posted: DateTime!) {
     createComment(
-      data: { body: $body, originalPost: { connect: { id: $postId } }, posted: $posted }
+      data: { body: $body, url: { connect: { slug: $postId } }, posted: $posted }
     ) {
       id
       body
       author {
-        name
-        avatar {
-          publicUrl
-        }
+        userName
       }
       posted
     }
@@ -35,38 +32,28 @@ const ADD_COMMENT = gql`
 
 const ALL_QUERIES = gql`
   query AllQueries($slug: String) {
-    allPosts(where: { slug: $slug }) {
+    allUrls(where: { slug: $slug }) {
       id
       title
       slug
-      body
+      description
       posted
-      image {
-        publicUrl
-      }
       author {
-        name
+        userName
       }
     }
 
-    allComments(where: { originalPost: { slug: $slug } }) {
+    allComments(where: { url: { slug: $slug } }) {
       id
       body
       author {
-        name
-        avatar {
-          publicUrl
-        }
+        userName
       }
       posted
     }
   }
 `;
 
-const imagePlaceholder = name => `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width="100" height="100">
-<rect width="100" height="100" fill="hsl(200,20%,50%)" />
-<text text-anchor="middle" x="50" y="67" fill="white" style="font-size: 50px; font-family: 'Rubik', sans-serif;">
-${name.charAt(0)}</text></svg>`;
 
 const Comments = ({ data }) => (
   <div>
@@ -81,14 +68,6 @@ const Comments = ({ data }) => (
               alignItems: 'center',
             }}
           >
-            <img
-              src={
-                comment.author.avatar
-                  ? comment.author.avatar.publicUrl
-                  : imagePlaceholder(comment.author.name)
-              }
-              css={{ width: 48, height: 48, borderRadius: 32 }}
-            />
             <div css={{ marginLeft: 16 }}>
               <p
                 css={{
@@ -98,7 +77,7 @@ const Comments = ({ data }) => (
                   margin: '8px 0',
                 }}
               >
-                {comment.author.name} on {format(parseISO(comment.posted), 'dd MMM yyyy')}
+                {comment.author.userName} on {format(parseISO(comment.posted), 'dd MMM yyyy')}
               </p>
               <p css={{ margin: '8px 0' }}>{comment.body}</p>
             </div>
@@ -224,7 +203,7 @@ const PostPage = withApollo(({ slug }) => {
             if (loading) return <p>loading...</p>;
             if (error) return <p>Error!</p>;
 
-            const post = data.allPosts && data.allPosts[0];
+            const post = data.allUrls && data.allUrls[0];
 
             if (!post) return <p>404: Post not found</p>;
 
@@ -243,13 +222,12 @@ const PostPage = withApollo(({ slug }) => {
                   <Head>
                     <title>{post.title}</title>
                   </Head>
-                  {post.image ? <img src={post.image.publicUrl} css={{ width: '100%' }} /> : null}
                   <article css={{ padding: '1em' }}>
                     <h1 css={{ marginTop: 0 }}>{post.title}</h1>
-                    <section dangerouslySetInnerHTML={{ __html: post.body }} />
+                    <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
                       <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-                        Posted by {post.author ? post.author.name : 'someone'} on{' '}
+                        Posted by {post.author ? post.author.userName : 'someone'} on{' '}
                         {format(parseISO(post.posted), 'dd/MM/yyyy')}
                       </p>
                     </div>

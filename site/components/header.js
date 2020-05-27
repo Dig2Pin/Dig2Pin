@@ -14,7 +14,7 @@ export default () => (
   >
     <p css={{ margin: 0, fontSize: '2em' }}>Dig2Pin</p>
     <Link href="/post/new" passHref>
-      <a css={{ color: 'hsl(200, 20%, 50%)', cursor: 'pointer' }}>+ Share URL</a>
+      <a css={{ color: 'hsl(200, 20%, 50%)', cursor: 'pointer' }}>+ Share an URL</a>
     </Link>
   </header>
 );

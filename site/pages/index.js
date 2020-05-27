@@ -33,7 +33,7 @@ const Post = ({ post }) => {
           <section dangerouslySetInnerHTML={{ __html: post.description }} />
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-              Posted by {post.author ? post.author.userName : 'someone'} on{' '}
+              Shared by {post.author ? post.author.userName : 'someone'} on{' '}
               {format(parseISO(post.posted), 'dd/MM/yyyy')}
             </p>
           </div>

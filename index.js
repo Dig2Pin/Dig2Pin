@@ -24,12 +24,16 @@ const keystone = new Keystone({
 const {User} = require('./data/User.js');
 const {Url} = require('./data/Url.js');
 const {Comment} = require('./data/Comment.js');
+const {Pin} = require('./data/Pin.js');
+const {Bookmark} = require('./data/Bookmark.js');
 //import schema end
 
 //create lists
 keystone.createList('User', User);
 keystone.createList('Url', Url);
 keystone.createList('Comment', Comment);
+keystone.createList('Pin', Pin);
+keystone.createList('Bookmark', Bookmark);
 
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,

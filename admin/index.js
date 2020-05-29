@@ -1,11 +1,12 @@
 export default {
   pages: () => [
     {
-      label: 'Post',
-      children: [
-        { listKey: 'Url' },
-        { listKey: 'Comment' },
-      ],
+      label: 'Url',
+      children: ['Url'],
+    },
+    {
+      label: 'Pin',
+      children: ['Pin' ,'Bookmark','Comment'],
     },
     {
       label: 'People',

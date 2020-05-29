@@ -34,6 +34,7 @@ const ALL_QUERIES = gql`
   query AllQueries($slug: String) {
     allUrls(where: { slug: $slug }) {
       id
+      url
       title
       slug
       description
@@ -223,7 +224,10 @@ const PostPage = withApollo(({ slug }) => {
                     <title>{post.title}</title>
                   </Head>
                   <article css={{ padding: '1em' }}>
+                  <a href={post.url} css={{textDecoration: 'none'}} target="_blank">
                     <h1 css={{ marginTop: 0 }}>{post.title}</h1>
+                    <p css={{ marginTop: 0 }}> >> {post.url}</p>
+                  </a>
                     <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
                       <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>

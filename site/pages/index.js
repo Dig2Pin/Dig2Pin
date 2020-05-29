@@ -27,10 +27,11 @@ const Post = ({ post }) => {
           textDecoration: 'none',
         }}
       >
-        {post.image ? <img src={post.image.publicUrl} css={{ width: '100%' }} /> : null}
         <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0, color:'black',}}>{post.title}</h3>
-          <section dangerouslySetInnerHTML={{ __html: post.description }} />
+          <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
+          <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+            {post.url.substring(7,46)}...
+          </p>
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
               Shared by {post.author ? post.author.userName : 'someone'} on{' '}

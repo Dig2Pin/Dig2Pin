@@ -25,7 +25,7 @@ exports.Bookmark = {
 				update: isAdmin,
 			},
 		},
-		created: { type: DateTime },
+		created: { type: DateTime, defaultValue: new Date(Date.now()).toISOString()},
 	},
 	labelResolver: item => item.owner,
 };

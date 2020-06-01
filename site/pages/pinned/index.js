@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 
 import { jsx } from '@emotion/core';
 import { format, parseISO } from 'date-fns';
@@ -37,10 +37,9 @@ const Post = ({ post }) => {
 
 export default withApollo(() => {
 
-  const { data:data2, loading:loading2, error:error2} = useQuery(gql`
+  const { data:data2, loading:loading2, error:error2} = useLazyQuery(gql`
     query {
       authenticatedUser {
-        id
         slug
       }
     }

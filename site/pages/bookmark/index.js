@@ -10,18 +10,8 @@ import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
 
 
-
-export const GET_USER = gql`query {
-      authenticatedUser {
-        id
-        slug
-      }
-    }
-  `;
-
-
 const GET_BOOKMARKS = gql`
-  query GetBookmarks($user:slug!) {
+  query GetBookmarks($user:String!) {
       allBookmarks(where:{owner:{slug:$user}}){
         title
         description
@@ -29,6 +19,15 @@ const GET_BOOKMARKS = gql`
   }
 `;
 
+const GET_USER =
+
+gql`query {
+      authenticatedUser {
+        id
+        slug
+      }
+    }
+  `;
 
 
 const Post = ({ post }) => {
@@ -56,47 +55,26 @@ const Post = ({ post }) => {
 
 
 const AuthUser = ({user, isLoading, error}) => {
-  const [
-    getResponses,
-    {data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError },
-  ] = useLazyQuery(GET_BOOKMARKS);
-
-  if ((isLoading && !user) || queryLoading) {
-    return (<p>Loading</p>);
-  }
-
-  // Error fetching the event, show nothing
-  if (error) {
-    console.error('Failed to render the user', error);
-    return null;
-  }
-
-  // Event is loaded but somehow still null. Bail.
-  if (!isLoading && !user) {
-    return null;
-  }
 
 
+
+  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS);
 
 
   if (!called) {
-    getResponses({ variables: { user:user.slug }});
-  };
-
- const { id, slug} = user;
-
+      const slug = "dig2pin";
+      getResponses({ variables: { user: slug } });
+    }
 
   return (
     <Layout>
       <section css={{ margin: '48px 0' }}>
         <h2>Bookmarks</h2>
-        <p>{user.id}</p>
-        <p>{String(slug)}</p>
-        <p>number:{allBookmarks.length}</p>
-        {queryLoading ? (
+        <p>{user.slug}</p>
+        {isLoading ? (
           <p>loading...</p>
-        ) : queryError ? (
-          <p>Errorfrom2!</p>
+        ) : error ? (
+          <p>Error!</p>
         ) : (
           <div>
             {allBookmarks.length ? (
@@ -113,10 +91,6 @@ const AuthUser = ({user, isLoading, error}) => {
 
 
 
-
-
-
-
 export default withApollo(() => {
 
   const {
@@ -125,11 +99,8 @@ export default withApollo(() => {
     error: userError,
   } = useQuery(GET_USER);
 
-  return (
-    <>
+  return (    
       <AuthUser isLoading={userLoading} error={userError} user={authenticatedUser} />
-      <p>{authenticatedUser.id}</p>
-    </>
   );
 
 });

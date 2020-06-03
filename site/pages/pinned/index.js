@@ -10,6 +10,16 @@ import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
 
 
+
+const GET_BOOKMARKS = gql`
+  query GetBookmarks($user:String!) {
+      allBookmarks(where:{owner:{slug:$user}}){
+        title
+        description
+      }
+  }
+`;
+
 /** @jsx jsx */
 
 const Post = ({ post }) => {
@@ -37,7 +47,7 @@ const Post = ({ post }) => {
 
 export default withApollo(() => {
 
-  const { data:data2, loading:loading2, error:error2} = useLazyQuery(gql`
+  const { data: { authenticatedUser = [] } = {}, loading:loading1, error:error1} = useQuery(gql`
     query {
       authenticatedUser {
         slug
@@ -45,28 +55,29 @@ export default withApollo(() => {
     }
   `);
 
+  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: loading2, error:error2 }] = useLazyQuery(GET_BOOKMARKS);
 
-  const { data, loading, error } = useQuery(gql`
-    query {
-      allBookmarks(where:{owner:{slug:"dig2pin"}}){
-        title
-        description
-      }
-    }
-  `);
+  if (!called) {
+      getResponses({ variables: { user: "dig2pin" } })};
+
 
   return (
     <Layout>
       <section css={{ margin: '48px 0' }}>
         <h2>Bookmarks</h2>
-        {loading ? (
-          <p>loading...</p>
-        ) : error ? (
-          <p>Error!</p>
+        <h2>Hi:{authenticatedUser.slug}</h2>
+        {loading1 ? (
+          <p>loading 1...</p>
+        ) : loading2 ? (
+          <p>loading 2...</p>
+        ) : error1 ? (
+          <p>Error  1!</p>
+        ) : error2 ? (
+          <p>Error  2!</p>
         ) : (
           <div>
-            {data.allBookmarks.length ? (
-              data.allBookmarks.map(post => <Post post={post} key={post.id} />)
+            {allBookmarks.length ? (
+              allBookmarks.map(post => <Post post={post} key={post.id} />)
             ) : (
               <p>No posts to display</p>
             )}

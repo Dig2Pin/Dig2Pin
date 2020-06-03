@@ -1,10 +1,7 @@
-import Link from 'next/link';
-
 import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 
 import { jsx } from '@emotion/core';
-import { format, parseISO } from 'date-fns';
 
 import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
@@ -20,14 +17,13 @@ const GET_BOOKMARKS = gql`
 `;
 
 const GET_USER =
-
-gql`query {
-      authenticatedUser {
-        id
-        slug
+  gql`query {
+        authenticatedUser{
+          id
+          slug
+        }
       }
-    }
-  `;
+    `;
 
 
 const Post = ({ post }) => {
@@ -53,29 +49,55 @@ const Post = ({ post }) => {
 
 
 
-
-const AuthUser = ({user, isLoading, error}) => {
+const AuthUser = ({data, loading, error}) => {
 
 
 
   const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS);
 
+  
+  // event is null while the outer query is fetching it
+  if ((loading && !data) || queryLoading) {
+    return (<p>Loading</p>);
+  }
+
+  // Error fetching the event, show nothing
+  if (error) {
+    console.error('Failed to render the user', error);
+    return null;
+  }
+
+  // Event is loaded but somehow still null. Bail.
+  if (!loading && !data) {
+    return null;
+  }
+
+const userSlug = "dig2pin";
 
   if (!called) {
-      const slug = "dig2pin";
-      getResponses({ variables: { user: slug } });
-    }
+      getResponses({ variables: { user: userSlug } })};
+
+  const slug = `${data.slug}`;  
+
 
   return (
     <Layout>
       <section css={{ margin: '48px 0' }}>
         <h2>Bookmarks</h2>
-        <p>{user.slug}</p>
-        {isLoading ? (
+        <p>{slug}</p>
+        {loading ? (
           <p>loading...</p>
-        ) : error ? (
+        ) : 
+        queryLoading ? (
+          <p>BookmarkLoading...</p>
+        ):
+        error ? (
           <p>Error!</p>
-        ) : (
+        ) :
+        queryError ? (
+          <p>BookmarkError!</p>
+        ) :
+        (
           <div>
             {allBookmarks.length ? (
               allBookmarks.map(post => <Post post={post} key={post.id} />)
@@ -91,7 +113,8 @@ const AuthUser = ({user, isLoading, error}) => {
 
 
 
-export default withApollo(() => {
+
+export default withApollo(() =>  {
 
   const {
     data: { authenticatedUser = [] } = {},
@@ -100,7 +123,7 @@ export default withApollo(() => {
   } = useQuery(GET_USER);
 
   return (    
-      <AuthUser isLoading={userLoading} error={userError} user={authenticatedUser} />
+      <AuthUser loading={userLoading} error={userError} data={authenticatedUser} />
   );
 
 });

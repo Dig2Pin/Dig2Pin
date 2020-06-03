@@ -18,7 +18,7 @@ const GET_BOOKMARKS = gql`
 
 const GET_USER =
   gql`query {
-        authenticatedUser{
+        allUsers(where:{slug:"demo"}){
           id
           slug
         }
@@ -72,10 +72,10 @@ const AuthUser = ({data, loading, error}) => {
     return null;
   }
 
-const userSlug = "dig2pin";
+
 
   if (!called) {
-      getResponses({ variables: { user: userSlug } })};
+      getResponses({ variables: { user: data.slug } })};
 
   const slug = `${data.slug}`;  
 
@@ -117,13 +117,13 @@ const userSlug = "dig2pin";
 export default withApollo(() =>  {
 
   const {
-    data: { authenticatedUser = [] } = {},
+    data: { allUsers = [] } = {},
     loading: userLoading,
     error: userError,
   } = useQuery(GET_USER);
 
   return (    
-      <AuthUser loading={userLoading} error={userError} data={authenticatedUser} />
+      <AuthUser loading={userLoading} error={userError} data={allUsers[0]} />
   );
 
 });

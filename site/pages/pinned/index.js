@@ -47,7 +47,7 @@ const Post = ({ post }) => {
 
 export default withApollo(() => {
 
-  const { data: { authenticatedUser = [] } = {}, loading:loading1, error:error1} = useQuery(gql`
+  const { data: { allUsers = [] } = {}, loading:userLoading, error:userError} = useQuery(gql`
     query {
       authenticatedUser {
         slug
@@ -55,25 +55,25 @@ export default withApollo(() => {
     }
   `);
 
-  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: loading2, error:error2 }] = useLazyQuery(GET_BOOKMARKS);
+  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: bookmarkLoading, error:bookmarkError}] = useLazyQuery(GET_BOOKMARKS);
 
   if (!called) {
-      getResponses({ variables: { user: "dig2pin" } })};
-
+      getResponses({ variables: { user:authenticatedUser.slug}})};
+ if(bookmarkError){console.log(bookmarkError);}
 
   return (
     <Layout>
       <section css={{ margin: '48px 0' }}>
         <h2>Bookmarks</h2>
-        <h2>Hi:{authenticatedUser.slug}</h2>
-        {loading1 ? (
-          <p>loading 1...</p>
-        ) : loading2 ? (
-          <p>loading 2...</p>
-        ) : error1 ? (
-          <p>Error  1!</p>
-        ) : error2 ? (
-          <p>Error  2!</p>
+        <h2>Hello:{authenticatedUser.slug}</h2>
+        {userLoading ? (
+          <p>User Loading ...</p>
+        ) : bookmarkLoading ? (
+          <p>Bookmark Loading ...</p>
+        ) : userError ? (
+          <p>User Error!</p>
+        ) : bookmarkError ? (
+          <p>Bookmark Error!</p>
         ) : (
           <div>
             {allBookmarks.length ? (

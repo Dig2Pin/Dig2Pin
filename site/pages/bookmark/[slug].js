@@ -1,14 +1,11 @@
 import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
-
 import { jsx } from '@emotion/core';
-
 import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
-
+import { format, parseISO } from 'date-fns';
 import { useAuth } from '../../lib/authentication';
-
-
+import Link from 'next/link';
 
 const GET_BOOKMARKS = gql`
   query GetBookmarks($user:String!) {
@@ -28,22 +25,24 @@ const GET_USER =
       }
     `;
 
+const GET_AUTH =
+  gql`query {
+      authenticatedUser {
+        id
+        slug
+      }
+    }
+    `;
+
+
 
 const Post = ({ post }) => {
   return (
       <div
-        css={{
-          display: 'block',
-          background: 'white',
-          boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
-          marginBottom: 32,
-          cursor: 'pointer',
-          borderRadius: 6,
-          overflow: 'hidden',
-        }}
+style={{display: 'block', background: 'white', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', marginBottom: 32, cursor: 'pointer', borderRadius: 6, overflow: 'hidden'}}
       >
-        <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
+        <article style={{ padding: '1em' }}>
+          <h3 style={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
           <p>{post.description}</p>
         </article>
       </div>
@@ -54,6 +53,11 @@ const Post = ({ post }) => {
 
 const Bookmark = ({data, loading, error}) => {
 
+  const {
+    data: { authenticatedUser = [] } = {},
+    loading: authLoading,
+    error: authError,
+  } = useQuery(GET_AUTH);
 
 
   const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS);
@@ -80,14 +84,20 @@ const Bookmark = ({data, loading, error}) => {
   if (!called) {
       getResponses({ variables: { user: data.slug } })};
 
-  const slug = `${data.slug}`;  
-
 
   return (
     <Layout>
-      <section css={{ margin: '48px 0' }}>
+      <section style={{ margin: '48px 0' }}>
         <h2>Bookmarks</h2>
-        <p>{slug}</p>
+        <h2>AUTH: {authenticatedUser.slug}</h2>
+        <h2>User: {data.slug}</h2>
+        { (authenticatedUser.slug == data.slug)?(
+          <h2>AUTH = DATA</h2>
+          ):(
+          <h2>AUTH != DATA</h2>
+          )
+        }
+
         {loading ? (
           <p>loading...</p>
         ) : 
@@ -125,7 +135,7 @@ const PostPage = withApollo(({slug}) =>  {
     error: userError,
   } = useQuery(GET_USER, { variables:{slug} });
 
-  return (    
+  return (
       <Bookmark loading={userLoading} error={userError} data={allUsers[0]} />
   );
 

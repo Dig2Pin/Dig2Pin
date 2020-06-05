@@ -35,8 +35,12 @@ const Post = ({ post }) => {
         }}
       >
         <article style={{ padding: '1em' }}>
-          <h3 style={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
-          <p>{post.description}</p>
+        <Link href={`/pinned/${post.id}`}>
+          <a style={{color: '#29363D',textDecoration: 'none',}}>
+            <h3 style={{color: '#29363D',}}>{post.title}</h3>
+            <p style={{color: '#29363D',}}>{post.description}</p>
+          </a>
+        </Link>
           <div style={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p style={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
               Bookmarked by <Link href={`/bookmark/${post.owner.slug}`}>
@@ -72,6 +76,7 @@ const Bookmark = () => {
 
   return (
     <Layout>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
       <section style={{ margin: '48px 0' }}>
         <h2>All Bookmarks</h2>
         {queryLoading ? (

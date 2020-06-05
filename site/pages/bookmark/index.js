@@ -1,50 +1,51 @@
 import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
-
 import { jsx } from '@emotion/core';
-
 import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
-
 import { useAuth } from '../../lib/authentication';
+import Link from 'next/link';
 
 
 
-const GET_BOOKMARKS = gql`
-  query GetBookmarks($user:String!) {
-      allBookmarks(where:{owner:{slug:$user}}){
+const GET_ALL_BOOKMARKS = gql`
+  query {
+    allBookmarks{
+        id
         title
         description
+        owner{
+          slug
+          userName
+        }
       }
   }
 `;
 
-const GET_USER =
-  gql`query {
-        allUsers(where:{slug:"demo"}){
-          id
-          slug
-        }
-      }
-    `;
 
 
 const Post = ({ post }) => {
   return (
       <div
-        css={{
+        style={{
           display: 'block',
           background: 'white',
-          boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
-          marginBottom: 32,
-          cursor: 'pointer',
-          borderRadius: 6,
-          overflow: 'hidden',
+          marginBottom: -1,
+          border: '1px solid hsla(200, 20%, 20%, 0.20)'
         }}
       >
-        <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
+        <article style={{ padding: '1em' }}>
+          <h3 style={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
           <p>{post.description}</p>
+          <div style={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
+            <p style={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+              Bookmarked by <Link href={`/bookmark/${post.owner.slug}`}>
+                  <a style={{color: '#FFCC99',textDecoration:'none'}}>
+                  {post.owner ? post.owner.userName : 'someone'}
+                  </a>
+              </Link>  
+            </p>
+          </div>
         </article>
       </div>
   );
@@ -53,56 +54,36 @@ const Post = ({ post }) => {
 
 
 
-const Bookmark = ({data, loading, error}) => {
+const Bookmark = () => {
 
-
-
-  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS);
+  const {data:{ allBookmarks = [] } = {}, loading: queryLoading, error:queryError }= useQuery(GET_ALL_BOOKMARKS);
 
   
   // event is null while the outer query is fetching it
-  if ((loading && !data) || queryLoading) {
+  if ( queryLoading) {
     return (<p>Loading</p>);
   }
 
   // Error fetching the event, show nothing
-  if (error) {
-    console.error('Failed to render the user', error);
+  if (queryError) {
+    console.error('Failed to render the user', queryError);
     return null;
   }
-
-  // Event is loaded but somehow still null. Bail.
-  if (!loading && !data) {
-    return null;
-  }
-
-
-
-  if (!called) {
-      getResponses({ variables: { user: data.slug } })};
-
-  const slug = `${data.slug}`;  
-
 
   return (
     <Layout>
-      <section css={{ margin: '48px 0' }}>
-        <h2>Bookmarks</h2>
-        <p>{slug}</p>
-        {loading ? (
-          <p>loading...</p>
-        ) : 
-        queryLoading ? (
+      <section style={{ margin: '48px 0' }}>
+        <h2>All Bookmarks</h2>
+        {queryLoading ? (
           <p>BookmarkLoading...</p>
         ):
-        error ? (
-          <p>Error!</p>
-        ) :
         queryError ? (
           <p>BookmarkError!</p>
         ) :
         (
-          <div>
+          <div style={{
+                boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
+              }}>
             {allBookmarks.length ? (
               allBookmarks.map(post => <Post post={post} key={post.id} />)
             ) : (
@@ -120,14 +101,8 @@ const Bookmark = ({data, loading, error}) => {
 
 export default withApollo(() =>  {
 
-  const {
-    data: { allUsers = [] } = {},
-    loading: userLoading,
-    error: userError,
-  } = useQuery(GET_USER);
-
   return (    
-      <Bookmark loading={userLoading} error={userError} data={allUsers[0]} />
+      <Bookmark/>
   );
 
 });

@@ -37,6 +37,7 @@
     "isomorphic-unfetch": "^3.0.0",
     "link-cleaner": "^1.0.0",
     "meta-extractor": "^2.0.0",
-    "normalize-url": "^5.0.0"
+    "normalize-url": "^5.0.0",
+    "react": "^16.13.1"
   }
 }

@@ -27,6 +27,6 @@ exports.Bookmark = {
 		},
 		created: { type: DateTime, defaultValue: new Date(Date.now()).toISOString()},
 	},
-	labelResolver: item => item.owner,
+	labelResolver: item => item.id,
 };
 

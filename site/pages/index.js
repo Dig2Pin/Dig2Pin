@@ -10,6 +10,20 @@ import Layout from '../templates/layout';
 import Header from '../components/header';
 import { withApollo } from '../lib/apollo';
 
+
+
+
+const GET_AUTH =
+  gql`query {
+      authenticatedUser {
+        id
+        slug
+      }
+    }
+    `;
+
+
+
 /** @jsx jsx */
 
 const Post = ({ post }) => {
@@ -29,11 +43,11 @@ const Post = ({ post }) => {
       >
         <article css={{ padding: '1em' }}>
           <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
-          <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+          <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
             {post.url.substring(7,46)}...
           </p>
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
-            <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+            <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
               Shared by {post.author ? post.author.userName : 'someone'} on{' '}
               {format(parseISO(post.posted), 'dd/MM/yyyy')}
             </p>
@@ -58,9 +72,38 @@ export default withApollo(() => {
     }
   `);
 
+    const {
+    data: { authenticatedUser = [] } = {},
+    loading: authLoading,
+    error: authError,
+  } = useQuery(GET_AUTH);
+
   return (
     <Layout>
       <Header />
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+      <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
+        <ul className="nav" >
+            <li className="nav-item">
+              <Link href={`/`}>
+                <a style={{color: 'orange', backgroundColor: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                Home
+                </a>
+              </Link>
+            </li>
+            {
+              authenticatedUser? (
+                  <li className="nav-item">
+                    <Link href={`/bookmark/${authenticatedUser.slug}`}>
+                      <a style={{color: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                      Bookmarks
+                      </a>
+                    </Link>
+                  </li>
+                ):(null)
+            }
+        </ul>
+      </nav>
       <section css={{ margin: '48px 0' }}>
         <h2>About</h2>
         <p>Dig2Pin is a social bookmarking platform to discover, pin, 

@@ -1,8 +1,8 @@
 # Dig2Pin
 
-<Center>
+<div align="center">
 <img width="400" src="https://raw.githubusercontent.com/Dig2Pin/Dig2Pin/master/public/logo.png">
-</Center>
+</div>
 
 **Dig2Pin** is a social bookmarking platform to discover, pin, and comment interesting instant links in your friend circle.
 

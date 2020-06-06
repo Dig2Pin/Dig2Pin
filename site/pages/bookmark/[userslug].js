@@ -1,18 +1,36 @@
 import gql from 'graphql-tag';
-import { useQuery,useLazyQuery } from '@apollo/react-hooks';
+import { useQuery,useLazyQuery,useMutation } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
 import { useAuth } from '../../lib/authentication';
 import Link from 'next/link';
+import { useState } from 'react';
+import { format, parseISO } from 'date-fns';
 
 const GET_BOOKMARKS = gql`
   query GetBookmarks($user:String!) {
-      allBookmarks(where:{owner:{slug:$user}}){
+      allBookmarks(sortBy: created_DESC,where:{owner:{slug:$user}}){
         id
         title
         description
       }
+  }
+`;
+
+const ADD_BOOKMARK = gql`
+  mutation AddBookmark( $title:String! , $description: String!, $created: DateTime!) {
+    createBookmark(
+      data: {title:$title , description: $description, created: $created }
+    ) {
+      id
+      title
+      description
+      owner {
+        slug
+      }
+      created
+    }
   }
 `;
 
@@ -36,7 +54,7 @@ const GET_AUTH =
 
 const Post = ({ post }) => {
   return (
-    <Link href={`/pinned/${post.id}`}>
+    <Link href={`/bookmark/pinned/${post.id}`}>
       <a style={{
           display: 'block',
           background: 'white',
@@ -53,6 +71,59 @@ const Post = ({ post }) => {
   );
 };
 
+
+
+const CreateBookmark = () => {
+
+  let [title, setTitle] = useState('');
+  let [description, setDescription] = useState('');
+
+  const [createBookmark, { loading: savingBookmark, error: saveError }] = useMutation(ADD_BOOKMARK, {
+    refetchQueries: ['GetBookmarks'],
+  });
+
+  return (
+    <>
+      <h5>Add new bookmark</h5>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          createBookmark({
+            variables: {
+              title,
+              description,
+              created: new Date(),
+            },
+          });
+          setTitle('');
+          setDescription('');
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Write a title"
+          name="title"
+          value={title}
+          onChange={event => {
+            setTitle(event.target.value);
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Write a description"
+          name="description"
+          value={description}
+          onChange={event => {
+            setDescription(event.target.value);
+          }}
+        />
+        <input
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </>)
+};
 
 
 const Bookmark = ({data, loading, error}) => {
@@ -91,6 +162,7 @@ const Bookmark = ({data, loading, error}) => {
 
   return (
     <Layout>
+    <CreateBookmark/>
       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
       <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >

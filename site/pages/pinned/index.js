@@ -1,89 +1,77 @@
-import Link from 'next/link';
-
 import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
-
 import { jsx } from '@emotion/core';
-import { format, parseISO } from 'date-fns';
-
 import Layout from '../../templates/layout';
 import { withApollo } from '../../lib/apollo';
+import Link from 'next/link';
 
-
-
-const GET_BOOKMARKS = gql`
-  query GetBookmarks($user:String!) {
-      allBookmarks(where:{owner:{slug:$user}}){
+const GET_PINS = gql`
+  query {
+      allPins{
         title
-        description
+        body
+        url{
+          slug
+        }
+        bookmark{
+          title
+          id
+        }
       }
   }
 `;
 
-/** @jsx jsx */
 
 const Post = ({ post }) => {
   return (
-      <div
-        css={{
+    <Link href={`/post/${post.url.slug}`}>
+      <a style={{
           display: 'block',
           background: 'white',
-          boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
-          marginBottom: 32,
-          cursor: 'pointer',
-          borderRadius: 6,
-          overflow: 'hidden',
-        }}
-      >
-        <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
-          <p>{post.description}</p>
+          marginBottom: -1,
+          border: '1px solid hsla(200, 20%, 20%, 0.20)'
+      }}>
+        <article style={{ padding: '1em' }}>
+          <h3 style={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
         </article>
-      </div>
+      </a>
+    </Link>
   );
 };
 
 
 
-export default withApollo(() => {
+export default withApollo(() =>  {
 
-  const { data: { authenticatedUser = [] } = {}, loading:loading1, error:error1} = useQuery(gql`
-    query {
-      authenticatedUser {
-        slug
-      }
-    }
-  `);
-
-  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: loading2, error:error2 }] = useLazyQuery(GET_BOOKMARKS);
-
-  if (!called) {
-      getResponses({ variables: { user: "dig2pin" } })};
+  const {
+    data :{allPins = [] } = {},
+    loading,
+    error
+  } = useQuery(GET_PINS);
 
 
-  return (
-    <Layout>
-      <section css={{ margin: '48px 0' }}>
-        <h2>Bookmarks</h2>
-        <h2>Hi:{authenticatedUser.slug}</h2>
-        {loading1 ? (
-          <p>loading 1...</p>
-        ) : loading2 ? (
-          <p>loading 2...</p>
-        ) : error1 ? (
-          <p>Error  1!</p>
-        ) : error2 ? (
-          <p>Error  2!</p>
-        ) : (
-          <div>
-            {allBookmarks.length ? (
-              allBookmarks.map(post => <Post post={post} key={post.id} />)
-            ) : (
-              <p>No posts to display</p>
+      return (
+        <Layout>
+          <section style={{ margin: '48px 0' }}>
+            <h2>All Pins</h2>
+            {loading ? (
+              <p>loading...</p>
+            ) : 
+            error ? (
+              <p>Error!</p>
+            ) :
+            (
+              <div style={{
+                    boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
+              }}>
+                {allPins.length ? (
+                  allPins.map(post => <Post post={post} key={post.id}/>)
+                ) : (
+                  <h3 style={{padding:'20px'}} >No pins to display</h3>
+                )}
+              </div>
             )}
-          </div>
-        )}
-      </section>
-    </Layout>
-  );
+          </section>
+        </Layout>
+      );
 });

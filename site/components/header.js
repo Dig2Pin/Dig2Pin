@@ -12,7 +12,9 @@ export default () => (
       margin: '48px 0',
     }}
   >
-    <p css={{ margin: 0, fontSize: '2em' }}>Dig2Pin</p>
+    <Link href="/" passHref>
+    <img src="/logo.png" alt="Dig2Pin.Cpm" style={{height:'3em'}} />
+    </Link>
     <Link href="/post/new" passHref>
       <a css={{ color: 'hsl(200, 20%, 50%)', cursor: 'pointer' }}>+ Share an URL</a>
     </Link>

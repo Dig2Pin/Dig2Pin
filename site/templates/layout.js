@@ -29,6 +29,7 @@ const Layout = ({ children }) => (
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <title>Dig2Pin</title>
       <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" />
+      <link rel="shortcut icon" href="favicon.ico" />
     </Head>
     <div
       css={{

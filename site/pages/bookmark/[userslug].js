@@ -10,7 +10,7 @@ import { format, parseISO } from 'date-fns';
 
 const GET_BOOKMARKS = gql`
   query GetBookmarks($user:String!) {
-      allBookmarks(sortBy: created_DESC,where:{owner:{slug:$user}}){
+      allBookmarks(sortBy: created_DESC , where:{owner:{slug:$user}}){
         id
         title
         description
@@ -35,10 +35,11 @@ const ADD_BOOKMARK = gql`
 `;
 
 const GET_USER =
-  gql`query GetUser($slug: String){
-        allUsers(where:{slug:$slug}){
+  gql`query GetUser($userslug: String){
+        allUsers(where:{slug:$userslug}){
           id
           slug
+          userName
         }
       }
     `;
@@ -83,8 +84,16 @@ const CreateBookmark = () => {
   });
 
   return (
-    <>
-      <h5>Add new bookmark</h5>
+    <div style={{
+          marginTop:'48px',
+          padding:'10px',
+          display: 'block',
+          background: 'white!important',
+          marginBottom: -1,
+          border: '1px solid hsla(200, 20%, 20%, 0.20)',
+          textDecoration: 'none',
+      }}>
+      <h4>Add new bookmark</h4>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -99,30 +108,40 @@ const CreateBookmark = () => {
           setDescription('');
         }}
       >
-        <input
-          type="text"
-          placeholder="Write a title"
-          name="title"
-          value={title}
-          onChange={event => {
-            setTitle(event.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Write a description"
-          name="description"
-          value={description}
-          onChange={event => {
-            setDescription(event.target.value);
-          }}
-        />
-        <input
-          type="submit"
-          value="Submit"
-        />
+        <div className="form-group">
+          <input
+            className='form-control'
+            style={{marginRight:'10px',marginBottom:'10px'}}
+            type="text"
+            placeholder="Write a title"
+            name="title"
+            value={title}
+            onChange={event => {
+              setTitle(event.target.value);
+            }}
+          />
+          <input
+            className='form-control'
+            type="text"
+            placeholder="Write a description"
+            name="description"
+            value={description}
+            onChange={event => {
+              setDescription(event.target.value);
+            }}
+          />
+        </div>
+        <div className="form-action">
+          <button className="btn"
+            style={{background:'orange',color:'white'}}
+            type="submit"
+          > 
+          Add
+
+          </button>
+        </div>
       </form>
-    </>)
+    </div>)
 };
 
 
@@ -135,7 +154,7 @@ const Bookmark = ({data, loading, error}) => {
   } = useQuery(GET_AUTH);
 
 
-  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS);
+  const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS,{refetchQueries: ['GetUser']});
 
   
   // event is null while the outer query is fetching it
@@ -162,7 +181,6 @@ const Bookmark = ({data, loading, error}) => {
 
   return (
     <Layout>
-    <CreateBookmark/>
       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
       <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >
@@ -186,19 +204,15 @@ const Bookmark = ({data, loading, error}) => {
             }
         </ul>
       </nav>
-      <section style={{ margin: '48px 0' }}>
-        <h2>Bookmarks</h2>
-        <h2>User: {data.slug}</h2>
-        { authenticatedUser? (
-              (authenticatedUser.slug == data.slug)?(
-                <h2>AUTH = DATA</h2>
-                ):(
-                <h2>AUTH != DATA</h2>
-                )
-          ):(
-            <h2>Not Login Yet!</h2>
-          )
-        }
+      { authenticatedUser? (
+          (authenticatedUser.slug == data.slug)? (
+            <><CreateBookmark/></>
+          ):(<h4 style={{marginTop:'48px'}}>{data.userName}'s bookmarks, check <Link href={`/bookmark/${authenticatedUser.slug}`}><a style={{textDecoration: 'none',color:'black'}}>[my bookmarks]</a></Link>.</h4>)
+        ):(<><h4 style={{marginTop:'48px'}}>Not Login Yet!</h4>
+            <h4>{data.slug}'s bookmarks</h4></>
+        )
+      }
+      <section>
         {loading ? (
           <p>loading...</p>
         ) : 

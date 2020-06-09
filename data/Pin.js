@@ -23,13 +23,9 @@ exports.Pin = {
 			ref: 'Url',
 		},
 		bookmark: {
-			type: AuthedRelationship,
+			type: Relationship,
 			ref: 'Bookmark',
 			isRequired: true,
-			access: {
-				create: isAdmin,
-				update: isAdmin,
-			},
 		},
 		created: { type: DateTime },
 	},

@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../../templates/layout';
-import { withApollo } from '../../../lib/apollo';
 import Link from 'next/link';
 
 const GET_PINS = gql`
@@ -41,7 +40,7 @@ const Post = ({ post }) => {
 
 
 
-const PinPage = withApollo(({bookmarkid}) =>  {
+const PinPage = ({bookmarkid}) =>  {
 
   const {
     data :{allPins = [] } = {},
@@ -79,7 +78,7 @@ const PinPage = withApollo(({bookmarkid}) =>  {
           </section>
         </Layout>
       );
-});
+};
 
 PinPage.getInitialProps = ({ query: { bookmarkid } }) => ({bookmarkid});
 

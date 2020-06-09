@@ -14,7 +14,6 @@ import styled from '@emotion/styled';
 import Layout from '../../templates/layout';
 import { Banner } from '../../components/banner';
 
-import { withApollo } from '../../lib/apollo';
 
 const FormGroup = styled.div({
   display: 'flex',
@@ -44,7 +43,7 @@ const ADD_URL = gql`
   }
 `;
 
-export default withApollo(() => {
+export default () => {
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -59,7 +58,7 @@ export default withApollo(() => {
   `);
 
   const [createUrl, { error: saveError, loading: savingPost }] = useMutation(ADD_URL, {
-    update: (cache, { data: { createPost } }) => {
+    update: (cache, { data: { createUrl } }) => {
       setSlug(createUrl.slug);
     },
   });
@@ -172,4 +171,4 @@ export default withApollo(() => {
       </div>
     </Layout>
   );
-});
+};

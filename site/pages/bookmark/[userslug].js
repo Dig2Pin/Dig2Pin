@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery,useMutation } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
-import { withApollo } from '../../lib/apollo';
 import { useAuth } from '../../lib/authentication';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -244,7 +243,7 @@ const Bookmark = ({data, loading, error}) => {
 
 
 
-const PostPage = withApollo(({userslug}) =>  {
+const PostPage = ({userslug}) =>  {
 
   const {
     data: { allUsers = [] } = {},
@@ -256,7 +255,7 @@ const PostPage = withApollo(({userslug}) =>  {
       <Bookmark loading={userLoading} error={userError} data={allUsers[0]} />
   );
 
-});
+};
 
 PostPage.getInitialProps = ({ query: { userslug } }) => ({ userslug});
 

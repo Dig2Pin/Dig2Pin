@@ -8,7 +8,7 @@ import { format, parseISO } from 'date-fns';
 
 import Layout from '../templates/layout';
 import Header from '../components/header';
-import { withApollo } from '../lib/apollo';
+//import { withApollo } from '../lib/apollo';
 
 
 
@@ -58,7 +58,7 @@ const Post = ({ post }) => {
   );
 };
 
-export default withApollo(() => {
+export default () => {
   const { data, loading, error } = useQuery(gql`
     query {
       allUrls(sortBy: posted_DESC){
@@ -129,4 +129,4 @@ export default withApollo(() => {
       </section>
     </Layout>
   );
-});
+};

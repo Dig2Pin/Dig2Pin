@@ -11,7 +11,7 @@ import { format, parseISO } from 'date-fns';
 import Layout from '../../templates/layout';
 import Header from '../../components/header';
 import { Banner } from '../../components/banner';
-import { withApollo } from '../../lib/apollo';
+
 
 /** @jsx jsx */
 
@@ -188,7 +188,7 @@ const AddComments = ({ post }) => {
 
 const Render = ({ children }) => children();
 
-const PostPage = withApollo(({ slug }) => {
+const PostPage = ({ slug }) => {
   const { data, loading, error } = useQuery(ALL_QUERIES, { variables: { slug } });
 
   return (
@@ -248,7 +248,7 @@ const PostPage = withApollo(({ slug }) => {
       </div>
     </Layout>
   );
-});
+};
 
 PostPage.getInitialProps = ({ query: { slug } }) => ({ slug });
 

@@ -10,7 +10,6 @@ import styled from '@emotion/styled';
 
 import Layout from '../templates/layout';
 import { Banner } from '../components/banner';
-import { withApollo } from '../lib/apollo';
 
 const FormGroup = styled.div({
   display: 'flex',
@@ -49,7 +48,7 @@ const AUTHENTICATED_USER = gql`
   }
 `;
 
-export default withApollo(() => {
+export default () => {
   const [email, setEmail] = useState('email to huanry@mail.meetugo.com for our alpha test');
   const [password, setPassword] = useState('password');
 
@@ -122,4 +121,4 @@ export default withApollo(() => {
       </div>
     </Layout>
   );
-});
+};

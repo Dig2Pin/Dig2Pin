@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
-import { withApollo } from '../../lib/apollo';
 import Link from 'next/link';
 
 const GET_PINS = gql`
@@ -41,7 +40,7 @@ const Post = ({ post }) => {
 
 
 
-export default withApollo(() =>  {
+export default () =>  {
 
   const {
     data :{allPins = [] } = {},
@@ -74,4 +73,4 @@ export default withApollo(() =>  {
           </section>
         </Layout>
       );
-});
+};

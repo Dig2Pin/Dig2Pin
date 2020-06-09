@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
-import { withApollo } from '../../lib/apollo';
 import { useAuth } from '../../lib/authentication';
 import Link from 'next/link';
 
@@ -104,10 +103,10 @@ const Bookmark = () => {
 
 
 
-export default withApollo(() =>  {
+export default () =>  {
 
   return (    
       <Bookmark/>
   );
 
-});
+};

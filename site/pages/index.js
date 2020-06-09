@@ -81,7 +81,6 @@ export default () => {
   return (
     <Layout>
       <Header />
-      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
       <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >
             <li className="nav-item">

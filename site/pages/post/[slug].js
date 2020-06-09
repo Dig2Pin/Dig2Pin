@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { useState } from 'react';
 
 import { jsx } from '@emotion/core';
@@ -11,7 +11,7 @@ import { format, parseISO } from 'date-fns';
 import Layout from '../../templates/layout';
 import Header from '../../components/header';
 import { Banner } from '../../components/banner';
-
+import { useAuth } from '../../lib/authentication';
 
 /** @jsx jsx */
 
@@ -26,6 +26,42 @@ const ADD_COMMENT = gql`
         userName
       }
       posted
+    }
+  }
+`;
+
+const GET_AUTH_BOOKMARKS = gql`
+  query GetAuthBookmark($user: ID!){
+    allBookmarks(where:{owner:{id:$user}}){
+        id
+        title
+      }
+  }
+`;
+
+const GET_PINED = gql`
+  query GetPined($url: ID!,$user: ID!){
+    allPins(where:{url:{id:$url} ,bookmark:{owner:{id:$user}}}){
+        id
+        title
+        bookmark{
+          id
+          title
+        }
+      }
+  }
+`;
+
+const ADD_PIN = gql`
+  mutation AddPin( $title:String!, $description:String!, $bookmark:ID! , $url: ID!) {
+    createPin(
+      data: {title:$title, body:$description, bookmark:{ connect:{ id: $bookmark}}, url:{ connect:{ id: $url}}}
+    ) {
+      id
+      bookmark{
+        id
+        title
+      }
     }
   }
 `;
@@ -54,6 +90,118 @@ const ALL_QUERIES = gql`
     }
   }
 `;
+
+const Bookmarks = ({post}) => {
+
+  let [bookmark, setBookmark] = useState('');
+
+  let [pinBookmarkId,setPinBookmarkId] = useState('');
+
+  let [pinBookmarkTitle,setPinBookmarkTitle] = useState('');
+
+  const [createPin, { loading: pinLoading, error: pinError }] = useMutation(ADD_PIN, {
+    update: (cache, { data: { createPin } }) => {
+      setPinBookmarkId(createPin.bookmark.id);setPinBookmarkTitle(createPin.bookmark.title);
+    },
+  });
+
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  const [pinResponses ,{ data:{ allPins = [] } = {}, called:findPinCalled, loading: findPinLoading, error:findPinError }] = useLazyQuery(GET_PINED);
+
+  const [bookmarkResponses ,{ data:{ allBookmarks = [] } = {},called, loading: bookmarkLoading, error:bookmarkError }] = useLazyQuery(GET_AUTH_BOOKMARKS);
+
+
+  if (!findPinCalled && isAuthenticated) { pinResponses({ variables: { url: post.id, user: user.id}})};
+
+  if (!called && isAuthenticated) { bookmarkResponses({ variables: { user: user.id} })};
+
+  
+
+  if(isLoading){return(<p>User Loding</p>)};
+
+  if(bookmarkLoading){return(<p>Loding Bookmark</p>)};
+
+  if(findPinLoading){return(<p>Loding Finding Pin</p>)};
+
+  if(pinLoading){return(<p>Loding Pin</p>)};
+
+  if(!isAuthenticated){return(null)};
+
+  if(pinBookmarkId){return(
+    <h2 style={{ marginBottom: 32}}>
+
+          <Link href={`/bookmark/pinned/${pinBookmarkId}`} passHref>
+            <a>Pinned in {pinBookmarkTitle}!</a>
+          </Link>
+
+    </h2>
+
+
+
+    )}
+
+  return(
+    <>
+      {allPins.length ? (
+        <h2 style={{ marginBottom: 32}}>Already pinned in :
+          <Link href={`/bookmark/pinned/${allPins[0].bookmark.id}`} passHref>
+            <a> [{allPins[0].bookmark.title}]</a>
+          </Link>
+        </h2>
+        ):( <div style={{ marginBottom: 32}}>
+              <h2>Slect bookmark to pin</h2>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  createPin({
+                    variables: {
+                      url:post.id,
+                      title:post.title,
+                      description:post.description,
+                      bookmark,
+                    },
+                  });
+                  setBookmark('');
+                }}   
+              >
+                <select className="form-control" name="bookmarks" value={bookmark} 
+                  onChange={event => {
+                        setBookmark(event.target.value);
+                }} >
+                  <option value=""> (select one) </option>
+                  {allBookmarks.length
+                    ? (
+                        allBookmarks.map(bookmark => (
+                        <option
+                          value={bookmark.id}
+                          key={bookmark.id}
+                        >
+                          {bookmark.title}
+                        </option>)
+                      )):(<option value="none">No Book Mark</option>)
+                  }
+                </select>
+                <input
+                  type="submit"
+                  value="Pin"
+                  css={{
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    background: 'hsl(200, 20%, 50%)',
+                    fontSize: '1em',
+                    color: 'white',
+                    border: 0,
+                    marginTop: 6,
+                  }}
+                />
+              </form>
+            </div>
+        )
+      }
+    </>
+    )
+}
 
 
 const Comments = ({ data }) => (
@@ -141,30 +289,9 @@ const AddComments = ({ post }) => {
                   posted: new Date(),
                 },
               });
-
               setComment('');
             }}
           >
-            <textarea
-              type="text"
-              placeholder="Write a comment"
-              name="comment"
-              disabled={formDisabled}
-              css={{
-                padding: 12,
-                fontSize: 16,
-                width: '100%',
-                height: 60,
-                border: 0,
-                borderRadius: 6,
-                resize: 'none',
-              }}
-              value={comment}
-              onChange={event => {
-                setComment(event.target.value);
-              }}
-            />
-
             <input
               type="submit"
               value="Submit"
@@ -189,6 +316,7 @@ const AddComments = ({ post }) => {
 const Render = ({ children }) => children();
 
 const PostPage = ({ slug }) => {
+
   const { data, loading, error } = useQuery(ALL_QUERIES, { variables: { slug } });
 
   return (
@@ -237,6 +365,7 @@ const PostPage = ({ slug }) => {
                     </div>
                   </article>
                 </div>
+                <Bookmarks post={post}/>          
 
                 <Comments data={data} />
 

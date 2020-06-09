@@ -18,6 +18,7 @@ const MyApp = ({ Component, pageProps, apolloClient, user }) => {
               name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
             />
+            <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
           </Head>
           <Component {...pageProps} />
         </AuthProvider>

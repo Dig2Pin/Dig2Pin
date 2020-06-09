@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "@apollo/react-ssr": "^3.1.5",
     "@emotion/core": "^10.0.28",
     "@keystonejs/adapter-mongoose": "^8.1.0",
     "@keystonejs/app-admin-ui": "^6.0.0",
@@ -38,6 +39,7 @@
     "link-cleaner": "^1.0.0",
     "meta-extractor": "^2.0.0",
     "normalize-url": "^5.0.0",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "react-apollo": "^3.1.5"
   }
 }

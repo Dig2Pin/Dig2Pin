@@ -165,7 +165,7 @@ const Bookmarks = ({post}) => {
                   setBookmark('');
                 }}   
               >
-                <select className="form-control" name="bookmarks" value={bookmark} 
+                <select className="form-control" required="true" name="bookmarks" value={bookmark} 
                   onChange={event => {
                         setBookmark(event.target.value);
                 }} >
@@ -292,6 +292,27 @@ const AddComments = ({ post }) => {
               setComment('');
             }}
           >
+            <textarea
+              className="form-control"
+              required="true"
+              type="text"
+              placeholder="Write a comment"
+              name="comment"
+              disabled={formDisabled}
+              css={{
+                padding: 12,
+                fontSize: 16,
+                width: '100%',
+                height: 60,
+                border: 0,
+                borderRadius: 6,
+                resize: 'none',
+              }}
+              value={comment}
+              onChange={event => {
+                setComment(event.target.value);
+              }}
+            />
             <input
               type="submit"
               value="Submit"

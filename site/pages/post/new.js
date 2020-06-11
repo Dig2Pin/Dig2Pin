@@ -109,7 +109,7 @@ export default () => {
                 e.preventDefault();
                 createUrl({
                   variables: {
-                    url,
+                    url:normalizeUrl(removeUrlGarbage(url.toLowerCase())),
                     title,
                     body,
                     posted: new Date(),
@@ -128,7 +128,7 @@ export default () => {
                   name="url"
                   value={url}
                   onChange={event => {
-                    setUrl(normalizeUrl(removeUrlGarbage(event.target.value)));
+                    setUrl(event.target.value);
                   }}
                 />
               </FormGroup>

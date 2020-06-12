@@ -2,10 +2,12 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery,useMutation } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
+import Header from '../../components/header';
 import { useAuth } from '../../lib/authentication';
 import Link from 'next/link';
 import { useState } from 'react';
 import { format, parseISO } from 'date-fns';
+
 
 const GET_BOOKMARKS = gql`
   query GetBookmarks($user:String!) {
@@ -114,6 +116,7 @@ const CreateBookmark = () => {
             type="text"
             placeholder="Write a title"
             name="title"
+            required
             value={title}
             onChange={event => {
               setTitle(event.target.value);
@@ -124,6 +127,7 @@ const CreateBookmark = () => {
             type="text"
             placeholder="Write a description"
             name="description"
+            required
             value={description}
             onChange={event => {
               setDescription(event.target.value);
@@ -180,6 +184,7 @@ const Bookmark = ({data, loading, error}) => {
 
   return (
     <Layout>
+    <Header/>
       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
       <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >

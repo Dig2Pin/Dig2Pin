@@ -52,6 +52,17 @@ const GET_PINED = gql`
   }
 `;
 
+const ADD_BOOKMARK = gql`
+  mutation AddBookmark( $createBookmarkTitle:String!, $createBookmarkDescription:String!) {
+    createBookmark(data: {title:$createBookmarkTitle, description:$createBookmarkDescription})
+    {
+      id
+      title
+    }
+  }
+`;
+
+
 const ADD_PIN = gql`
   mutation AddPin( $title:String!, $description:String!, $bookmark:ID! , $url: ID!) {
     createPin(
@@ -95,13 +106,29 @@ const Bookmarks = ({post}) => {
 
   let [bookmark, setBookmark] = useState('');
 
+  let [resMarkId,setResMarkId] = useState('');
+
+  let [createBookmarkTitle,setCreateBookmarkTitle] = useState('');
+
+  let [resMarkTitle,setResMarkTitle] = useState('');
+  
+  let [createBookmarkDescription,setCreateBookmarDescription] = useState(''); 
+
   let [pinBookmarkId,setPinBookmarkId] = useState('');
 
   let [pinBookmarkTitle,setPinBookmarkTitle] = useState('');
 
+
   const [createPin, { loading: pinLoading, error: pinError }] = useMutation(ADD_PIN, {
     update: (cache, { data: { createPin } }) => {
       setPinBookmarkId(createPin.bookmark.id);setPinBookmarkTitle(createPin.bookmark.title);
+    },
+  });
+
+
+  const [createBookmark, { loading: createBookmarkLoading, error: createBookmarkError }] = useMutation(ADD_BOOKMARK, {
+    update: (cache, { data: { createBookmark } }) => {
+      setResMarkId(createBookmark.id);setResMarkTitle(createBookmark.title);
     },
   });
 
@@ -126,6 +153,8 @@ const Bookmarks = ({post}) => {
 
   if(pinLoading){return(<p>Loding Pin</p>)};
 
+  if(createBookmarkLoading){return(<p>Loding to create bookmark</p>)};
+
   if(!isAuthenticated){return(null)};
 
   if(pinBookmarkId){return(
@@ -134,11 +163,7 @@ const Bookmarks = ({post}) => {
           <Link href={`/bookmark/pinned/${pinBookmarkId}`} passHref>
             <a>Pinned in {pinBookmarkTitle}!</a>
           </Link>
-
     </h2>
-
-
-
     )}
 
   return(
@@ -169,7 +194,10 @@ const Bookmarks = ({post}) => {
                   onChange={event => {
                         setBookmark(event.target.value);
                 }} >
-                  <option value=""> (select one) </option>
+                  {resMarkId ? (<option value={resMarkId}> {resMarkTitle} </option>):(
+                    <option value=""> (select one) </option>
+                    )
+                }
                   {allBookmarks.length
                     ? (
                         allBookmarks.map(bookmark => (
@@ -178,13 +206,83 @@ const Bookmarks = ({post}) => {
                           key={bookmark.id}
                         >
                           {bookmark.title}
-                        </option>)
+                        </option>
+                        )
                       )):(<option value="none">No Book Mark</option>)
                   }
                 </select>
+                {resMarkId ? (
+                  <input
+                    type="submit"
+                    value="Pin"
+                    css={{
+                      padding: '6px 12px',
+                      borderRadius: 6,
+                      background: 'yellow',
+                      fontSize: '1em',
+                      color: 'black',
+                      border: 0,
+                      marginTop: 6,
+                      float:'right',
+                    }}
+                  />):(
+                  <input
+                    type="submit"
+                    value="Pin"
+                    css={{
+                      padding: '6px 12px',
+                      borderRadius: 6,
+                      background: 'hsl(200, 20%, 50%)',
+                      fontSize: '1em',
+                      color: 'white',
+                      border: 0,
+                      marginTop: 6,
+                      float:'right',
+                    }}
+                  />
+                  )
+                }
+              </form>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  createBookmark({
+                    variables: {
+                      createBookmarkTitle,
+                      createBookmarkDescription
+                    },
+                  });
+                  setCreateBookmarkTitle('');
+                  setCreateBookmarDescription('')
+                }}
+              >
+              <input
+              className='form-control'
+              type="text"
+              required="true"
+              placeholder="Add New Bookmark"
+              name="createBookmarkTitle"
+              value={createBookmarkTitle}
+              style={{width:'30%',float:'left'}}
+              onChange={event => {
+                setCreateBookmarkTitle(event.target.value);
+              }}
+              />
+              <input
+              className='form-control'
+              type="text"
+              required="true"
+              placeholder="New Bookmark description"
+              name="createBookmarkDescription"
+              value={createBookmarkDescription}
+              style={{width:'30%',float:'left'}}
+              onChange={event => {
+                setCreateBookmarDescription(event.target.value);
+              }}
+              />
                 <input
                   type="submit"
-                  value="Pin"
+                  value="+"
                   css={{
                     padding: '6px 12px',
                     borderRadius: 6,
@@ -192,10 +290,12 @@ const Bookmarks = ({post}) => {
                     fontSize: '1em',
                     color: 'white',
                     border: 0,
-                    marginTop: 6,
+                    float:'left',
                   }}
                 />
               </form>
+              <div style={{width:'100%',height:'32px'}}>
+              </div>           
             </div>
         )
       }

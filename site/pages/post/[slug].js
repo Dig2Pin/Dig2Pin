@@ -39,6 +39,19 @@ const GET_AUTH_BOOKMARKS = gql`
   }
 `;
 
+const GET_BOOKMARKS = gql`
+  query GetBookmarks($url: ID!){
+    allPins(first: 3, where:{url:{id:$url}}){
+        id
+        bookmark{
+          id
+          title
+          description
+        }
+      }
+  }
+`;
+
 const GET_PINED = gql`
   query GetPined($url: ID!,$user: ID!){
     allPins(where:{url:{id:$url} ,bookmark:{owner:{id:$user}}}){
@@ -101,6 +114,57 @@ const ALL_QUERIES = gql`
     }
   }
 `;
+
+
+const Recommends = ({post}) => {
+
+const { data, loading, error } = useQuery(GET_BOOKMARKS, { variables: { url:post.id } });
+
+ if(loading){return(<p>Recommends Loding</p>)};
+
+ return(
+  <>
+  <style dangerouslySetInnerHTML={{__html: "@media (max-width: 580px) { .recom { width:98%;padding-bottom:49%}}\n@media (min-width: 580px) and (max-width: 900px) { .recom { width:47%;padding-bottom:24%}} " }} />
+    {data.allPins.length
+      ? (<div>
+        <h2>The URL is pin on the bookmarks.</h2>
+        {data.allPins.map(p => (
+          <div
+            key={p.id}
+            className ='recom'
+            css={{
+              width: '31%',
+              height:0,
+              paddingBottom:'15%',
+              float:'left',
+              background:'white',
+              borderRadius: 6,
+              marginBottom:'2%',
+              marginRight:'1%',
+              marginLeft:'1%',
+              boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
+              overflow: 'hidden',
+            }}
+          >
+          <Link href={`/bookmark/pinned/${p.bookmark.id}`}>
+            <a target="_blank">
+              <div style={{margin:'1em'}}>
+                <h5>{p.bookmark.title}</h5>
+                <p>{p.bookmark.description}</p>
+              </div>
+            </a>
+          </Link>
+          </div>
+        ))}
+       </div>): (null)
+    }
+            <div style={{clear:'both'}}></div>
+  </>
+  )
+
+}
+
+
 
 const Bookmarks = ({post}) => {
 
@@ -294,7 +358,7 @@ const Bookmarks = ({post}) => {
                   }}
                 />
               </form>
-              <div style={{width:'100%',height:'32px'}}>
+              <div style={{clear:'both'}}>
               </div>           
             </div>
         )
@@ -447,7 +511,6 @@ const PostPage = ({ slug }) => {
         <Link href="/" passHref>
           <a css={{ color: 'hsl(200,20%,50%)', cursor: 'pointer' }}>{'< Go Back'}</a>
         </Link>
-
         <Render>
           {() => {
             if (loading) return <p>loading...</p>;
@@ -486,7 +549,9 @@ const PostPage = ({ slug }) => {
                     </div>
                   </article>
                 </div>
-                <Bookmarks post={post}/>          
+                <Bookmarks post={post}/>
+
+                <Recommends post={post}/>         
 
                 <Comments data={data} />
 

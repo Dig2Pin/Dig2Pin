@@ -18,6 +18,7 @@ const GET_PINS = gql`
         }
         bookmark{
           title
+          description
           id
           owner{
             id
@@ -149,12 +150,13 @@ const PinPage = ({bookmarkid}) =>  {
         <Layout>
         <Header/>
           <section style={{ margin: '48px 0' }}>
-            <h2>Pins</h2>
             {allPins.length ? (
-              <h2>{allPins[0].bookmark.title}</h2>
+              <>
+                <h3>Pins in {allPins[0].bookmark.title}</h3>
+                <p>Description: {allPins[0].bookmark.description}</p>
+              </>
               ) : (null)
-            }
-            
+            }  
             {loading ? (
               <p>loading...</p>
             ) : 

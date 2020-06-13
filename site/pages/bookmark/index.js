@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../templates/layout';
+import Header from '../../components/header';
 import { useAuth } from '../../lib/authentication';
 import Link from 'next/link';
 
@@ -75,7 +76,7 @@ const Bookmark = () => {
 
   return (
     <Layout>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <Header/>
       <section style={{ margin: '48px 0' }}>
         <h2>All Bookmarks</h2>
         {queryLoading ? (

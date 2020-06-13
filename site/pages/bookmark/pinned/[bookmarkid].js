@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { useQuery,useLazyQuery } from '@apollo/react-hooks';
 import { jsx } from '@emotion/core';
 import Layout from '../../../templates/layout';
+import Header from '../../../components/header';
 import Link from 'next/link';
 
 const GET_PINS = gql`
@@ -51,6 +52,7 @@ const PinPage = ({bookmarkid}) =>  {
 
       return (
         <Layout>
+        <Header/>
           <section style={{ margin: '48px 0' }}>
             <h2>Pins</h2>
             {allPins.length ? (

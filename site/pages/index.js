@@ -89,7 +89,7 @@ const Pined = () => {
             }}
           >
           <Link href={`/post/${p.url.slug}`}>
-            <a target="_blank" style={{textDecoration: 'none'}}>
+            <a style={{textDecoration: 'none'}}>
               <div style={{margin:'1em'}}>
                 <p style={{color: 'hsl(200, 20%, 50%)',borderBottom: '1px solid hsl(200, 20%, 80%)'}} >Pinned By: {p.bookmark.owner.userName}</p>
                 <h5 style={{color: '#29363D',marginTop:'-10px'}}>{p.title}</h5>
@@ -153,11 +153,11 @@ export default () => {
   return (
     <Layout>
       <Header />
-      <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
+      <nav style={{backgroundColor: 'lightyellow', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >
           <li className="nav-item">
             <Link href={`/`}>
-              <a style={{color: 'orange', backgroundColor: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+              <a style={{color: 'lightyellow', backgroundColor: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
               Home
               </a>
             </Link>
@@ -166,13 +166,13 @@ export default () => {
           {
             authenticatedUser? (
                   <Link href={`/bookmark/${authenticatedUser.slug}`}>
-                    <a style={{color: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                    <a style={{color: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
                     Bookmarks
                     </a>
                   </Link>
               ):(
                   <Link href={`/bookmark`}>
-                    <a style={{color: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                    <a style={{color: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
                     Bookmarks
                     </a>
                   </Link>

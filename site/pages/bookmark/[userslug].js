@@ -136,7 +136,7 @@ const CreateBookmark = () => {
         </div>
         <div className="form-action">
           <button className="btn"
-            style={{background:'orange',color:'white'}}
+            style={{background:'hsl(200, 20%, 50%)',color:'white'}}
             type="submit"
           > 
           Add
@@ -186,11 +186,11 @@ const Bookmark = ({data, loading, error}) => {
     <Layout>
     <Header/>
       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
-      <nav style={{backgroundColor: 'orange', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
+      <nav style={{backgroundColor: 'lightyellow', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >
             <li className="nav-item">
               <Link href={`/`}>
-                <a style={{color: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                <a style={{color: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
                 Home
                 </a>
               </Link>
@@ -199,7 +199,7 @@ const Bookmark = ({data, loading, error}) => {
               authenticatedUser? (
                   <li className="nav-item">
                     <Link href={`/bookmark/${authenticatedUser.slug}`}>
-                      <a style={{color: 'orange', backgroundColor: '#eee', borderRadius: '6px', padding:'5px',margin:'5px'}}>
+                      <a style={{color: 'lightyellow', backgroundColor: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
                       Bookmarks
                       </a>
                     </Link>

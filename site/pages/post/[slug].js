@@ -225,7 +225,7 @@ const Bookmarks = ({post}) => {
     <h2 style={{ marginBottom: 32}}>
 
           <Link href={`/bookmark/pinned/${pinBookmarkId}`} passHref>
-            <a>Pinned in {pinBookmarkTitle}!</a>
+            <a target="_blank">Pinned in {pinBookmarkTitle}!</a>
           </Link>
     </h2>
     )}
@@ -235,7 +235,7 @@ const Bookmarks = ({post}) => {
       {allPins.length ? (
         <h2 style={{ marginBottom: 32}}>Already pinned in :
           <Link href={`/bookmark/pinned/${allPins[0].bookmark.id}`} passHref>
-            <a> [{allPins[0].bookmark.title}]</a>
+            <a target="_blank"> [{allPins[0].bookmark.title}]</a>
           </Link>
         </h2>
         ):( <div style={{ marginBottom: 32}}>

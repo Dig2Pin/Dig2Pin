@@ -7,8 +7,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/authentication';
 
-const GET_PINS = gql`
-  query GetPins($bookmarkid:ID!) {
+const ALL_QUERIES = gql`
+  query AllQueries($bookmarkid:ID!) {
       allPins(where:{bookmark:{id:$bookmarkid}}){
         id
         title
@@ -23,6 +23,13 @@ const GET_PINS = gql`
           owner{
             id
           }
+        }
+      }
+
+      allBookmarks(where:{id:$bookmarkid}){
+        owner{
+          slug
+          userName
         }
       }
   }
@@ -119,20 +126,27 @@ const Post = ({ post }) => {
 const PinPage = ({bookmarkid}) =>  {
 
   const {
-    data :{allPins = [] } = {},
+    data,
     loading,
     error
-  } = useQuery(GET_PINS, { variables:{bookmarkid}});
+  } = useQuery(ALL_QUERIES, { variables:{bookmarkid}});
 
+  if(loading){return(<p>Loading</p>)}
+  if(error){return(<p>error</p>)}
 
       return (
         <Layout>
         <Header/>
+          <div style={{ margin: '48px 0' }}>
+            <Link href={`/bookmark/${data.allBookmarks[0].owner.slug}`} passHref>
+              <a style={{ color: 'hsl(200,20%,50%)', cursor: 'pointer' }}>{'< Back to '}{data.allBookmarks[0].owner.userName}' bookmarks</a>
+            </Link>
+          </div>
           <section style={{ margin: '48px 0' }}>
-            {allPins.length ? (
+            {data.allPins.length ? (
               <>
-                <h3>Pins in {allPins[0].bookmark.title}</h3>
-                <p>Description: {allPins[0].bookmark.description}</p>
+                <h3>Pins in {data.allPins[0].bookmark.title}</h3>
+                <p>Description: {data.allPins[0].bookmark.description}</p>
               </>
               ) : (null)
             }  
@@ -146,8 +160,8 @@ const PinPage = ({bookmarkid}) =>  {
               <div style={{
                     boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
               }}>
-                {allPins.length ? (
-                  allPins.map(post => <Post post={post} key={post.id}/>)
+                {data.allPins.length ? (
+                  data.allPins.map(post => <Post post={post} key={post.id}/>)
                 ) : (
                   <h3 style={{padding:'20px'}} >No pins to display</h3>
                 )}
@@ -166,7 +180,7 @@ const PinPage = ({bookmarkid}) =>  {
                       marginBottom: '-0.8em',
                     }}>
                       <center>
-                      <p style={{color: '#29363D'}}>(Latest One)</p>
+                      <p style={{color: '#29363D'}}>(Lasted One)</p>
                       </center>
                     </div>
                 </article>

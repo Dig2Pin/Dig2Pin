@@ -166,7 +166,7 @@ const PinPage = ({bookmarkid}) =>  {
                       marginBottom: '-0.8em',
                     }}>
                       <center>
-                      <p style={{color: '#29363D'}}>(Lasted One)</p>
+                      <p style={{color: '#29363D'}}>(Latest One)</p>
                       </center>
                     </div>
                 </article>

@@ -13,7 +13,7 @@ export default () => (
     }}
   >
     <Link href="/" passHref>
-    <img src="/logo.png" alt="Dig2Pin.Cpm" style={{height:'3em'}} />
+    <img src="/logo.png" alt="Dig2Pin.Cpm" style={{width:'20%'}} />
     </Link>
     <Link href="/post/new" passHref>
       <a css={{ color: 'hsl(200, 20%, 50%)', cursor: 'pointer' }}>+ Share an URL</a>

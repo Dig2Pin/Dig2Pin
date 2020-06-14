@@ -50,12 +50,15 @@ const DPin = ({ID}) => {
               padding: '6px 12px',
               width:'30%',
               fontSize:'1em',
-              height:'4em',
-              margin:'-0.5em',
-              background: 'black',
+              height:'2em',
+              marginTop:'-2.7em',
+              marginRight:'-0.5em',
+              background: '#29363D',
               color: 'white',
               border: 0,
-              float:'right'
+              float:'right',
+              display:'block',
+              zIndex:9999
             }}
             onClick={() => {
               deletePin({
@@ -78,59 +81,35 @@ const Post = ({ post }) => {
   if(isLoading){return(<p>User Loding</p>)};
   return (
           <article style={{
-              padding: '0.5em',
+              padding: '0.25em',
               display: 'block',
               background: 'white',
-              marginBottom: -1,
-              border: '1px solid hsla(200, 20%, 20%, 0.20)'
+              marginBottom: '-1em',
+              border: '1px solid hsla(200, 20%, 20%, 0.20)',
+              overflow: 'hidden'
               }}>
+            <Link href={`/post/${post.url.slug}`}>
+              <a
+              target="_blank">
+              <div style={{
+                height:'1em',
+                marginBottom:'-2em',
+                marginTop:'0em',
+                overflow: 'hidden',
+                whiteSpace:'nowrap',
+                display:'inline'
+              }}>
+                <p style={{ fontSize:'1em',marginTop: 0, color: '#29363D'}}>{post.title}</p>
+              </div>
+              </a>
+            </Link>
             {isAuthenticated ? (
-               (user.id == post.bookmark.owner.id) ? (
-                  <>
-                    <Link href={`/post/${post.url.slug}`}>
-                      <a
-                      target="_blank">
-                      <div style={{
-                        width:'70%',
-                        float:'left',
-                        height:'3em',
-                        overflow: 'hidden'
-                      }}>
-                        <p style={{ fontSize:'2em',marginTop: 0, color: '#29363D',}}>{post.title}</p>
-                      </div>
-                      </a>
-                    </Link>
-                    <DPin ID={post.id}/>
-                  </>
-                ):(
-                  <Link href={`/post/${post.url.slug}`}>
-                    <a
-                    target="_blank">
-                    <div style={{
-                      float:'left',
-                      height:'3em',
-                      overflow: 'hidden'
-                    }}>
-                      <p style={{ fontSize:'2em',marginTop: 0, color: '#29363D',}}>{post.title}</p>
-                    </div>
-                    </a>
-                  </Link>
-                )
-              ):(
-                  <Link href={`/post/${post.url.slug}`}>
-                    <a
-                    target="_blank">
-                    <div style={{
-                      float:'left',
-                      height:'3em',
-                      overflow: 'hidden'
-                    }}>
-                      <p style={{ fontSize:'2em',marginTop: 0, color: '#29363D',}}>{post.title}</p>
-                    </div>
-                    </a>
-                  </Link>
-              )}
-            <div style={{clear:'both'}}></div>
+              (user.id == post.bookmark.owner.id) ? (
+                <>
+                  <DPin ID={post.id}/>
+                </>
+                ):(null)
+              ):(null)}
           </article>
   );
 };
@@ -172,6 +151,27 @@ const PinPage = ({bookmarkid}) =>  {
                 ) : (
                   <h3 style={{padding:'20px'}} >No pins to display</h3>
                 )}
+
+
+                <article style={{
+                    padding: '0.25em',
+                    display: 'block',
+                    background: 'white',
+                    border: '1px solid hsla(200, 20%, 20%, 0.20)',
+                    overflow: 'hidden'
+                    }}>
+                    <div style={{
+                      overflow: 'hidden',
+                      whiteSpace:'nowrap',
+                      marginBottom: '-0.8em',
+                    }}>
+                      <center>
+                      <p style={{color: '#29363D'}}>(Lasted One)</p>
+                      </center>
+                    </div>
+                </article>
+
+
               </div>
             )}
           </section>

@@ -15,6 +15,9 @@ const GET_BOOKMARKS = gql`
         id
         title
         description
+        owner{
+          id
+        }
       }
   }
 `;
@@ -35,6 +38,22 @@ const ADD_BOOKMARK = gql`
   }
 `;
 
+const REMOVE_BOOKMARK = gql`
+  mutation RemoveBookmark($id:ID!){
+    deleteBookmark(id:$id){
+      id
+    }
+  }
+`
+
+const PIN_NUMBER = gql`
+query PinNumber($id:ID!){
+  _allPinsMeta(where:{bookmark:{id:$id}}){
+    count
+  }
+}
+`
+
 const GET_USER =
   gql`query GetUser($userslug: String){
         allUsers(where:{slug:$userslug}){
@@ -45,35 +64,86 @@ const GET_USER =
       }
     `;
 
-const GET_AUTH =
-  gql`query {
-      authenticatedUser {
-        id
-        slug
-      }
-    }
-    `;
+const Remove = ({ID}) => {
+  const [deleteBookmark, { loading, error }] = useMutation(REMOVE_BOOKMARK,{
+    refetchQueries: ['GetBookmarks'],
+  });
 
-const Post = ({ post }) => {
+  if(loading){return(<p>Loading</p>)};
+  if(error){return(null)};
+
+  return(
+        <>
+          <button
+            onClick={() => {
+              deleteBookmark({
+                variables: {
+                  id:ID,
+              }})
+            }}
+          style={{
+            background: '#29363D',
+            color: 'white',
+            float:'right',
+            marginTop:'-5.5em',
+            marginRight:'-0.5em',
+            width:'5.9em',
+            height:'5em',
+          }}
+          >
+            Remove
+          </button>
+          <div style={{clear:'both'}}></div>
+          </>
+    )
+}
+
+const Post = ({ post, user, isAuthenticated}) => {
+  const{data, loading, error} = useQuery( PIN_NUMBER, {variables:{id:post.id}});
+
+  if(loading){return(<p>Loading</p>)};
+  if(error){return(null)};
+
   return (
+  <article style={{
+    padding: '0.5em',
+    display: 'block',
+    background: 'white',
+    marginBottom: '-1em',
+    border: '1px solid hsla(200, 20%, 20%, 0.20)',
+    overflow: 'hidden'
+  }}
+  >
     <Link href={`/bookmark/pinned/${post.id}`}>
       <a style={{
-          display: 'block',
-          background: 'white',
-          marginBottom: -1,
-          border: '1px solid hsla(200, 20%, 20%, 0.20)',
           textDecoration: 'none',
       }}>
-        <article style={{ padding: '1em' }}>
-          <h3 style={{color: '#29363D',}}>{post.title}</h3>
-          <p style={{ color: '#29363D'}}>{post.description}</p>
-        </article>
+        <div style={{overflow: 'hidden',whiteSpace:'nowrap',display:'inline'}}>
+          <h3 style={{color: '#29363D'}}>{post.title}</h3>
+          <p style={{ color: '#29363D'}}>{data._allPinsMeta.count} pinned</p>
+        </div>
       </a>
     </Link>
+    {isAuthenticated ? (
+      (post.owner.id == user.id) ? (
+        data._allPinsMeta.count ? (
+          <div style={{
+                background: '#29363D',
+                color: 'white',
+                float:'right',
+                marginTop:'-5.5em',
+                marginRight:'-0.5em',
+                height:'5em',
+                }}>
+                <p style={{marginTop:'1.6em',marginRight:'0.5em',marginLeft:'0.5em'}}>Pinned > 0</p>
+          </div>
+          ):(<Remove ID = {post.id}/>)
+      ):(null)
+
+      ):(null)}
+    </article>
   );
 };
-
-
 
 const CreateBookmark = () => {
 
@@ -150,11 +220,7 @@ const CreateBookmark = () => {
 
 const Bookmark = ({data, loading, error}) => {
 
-  const {
-    data: { authenticatedUser = [] } = {},
-    loading: authLoading,
-    error: authError,
-  } = useQuery(GET_AUTH);
+const { isAuthenticated, isLoading, user } = useAuth();
 
 
   const [getResponses,{data:{ allBookmarks = [] } = {}, called, loading: queryLoading, error:queryError }] = useLazyQuery(GET_BOOKMARKS,{refetchQueries: ['GetUser']});
@@ -177,7 +243,6 @@ const Bookmark = ({data, loading, error}) => {
   }
 
 
-
   if (!called) {
       getResponses({ variables: { user: data.slug } })};
 
@@ -196,9 +261,9 @@ const Bookmark = ({data, loading, error}) => {
               </Link>
             </li>
             {
-              authenticatedUser? (
+              isAuthenticated? (
                   <li className="nav-item">
-                    <Link href={`/bookmark/${authenticatedUser.slug}`}>
+                    <Link href={`/bookmark/${user.slug}`}>
                       <a style={{color: 'lightyellow', backgroundColor: 'black', borderRadius: '6px', padding:'5px',margin:'5px'}}>
                       Bookmarks
                       </a>
@@ -208,10 +273,10 @@ const Bookmark = ({data, loading, error}) => {
             }
         </ul>
       </nav>
-      { authenticatedUser? (
-          (authenticatedUser.slug == data.slug)? (
+      { isAuthenticated? (
+          (user.slug == data.slug)? (
             <><CreateBookmark/></>
-          ):(<h4 style={{marginTop:'48px'}}>{data.userName}'s bookmarks, check <Link href={`/bookmark/${authenticatedUser.slug}`}><a style={{textDecoration: 'none',color:'black'}}>[my bookmarks]</a></Link>.</h4>)
+          ):(<h4 style={{marginTop:'48px'}}>{data.userName}'s bookmarks, check <Link href={`/bookmark/${user.slug}`}><a style={{textDecoration: 'none',color:'black'}}>[my bookmarks]</a></Link>.</h4>)
         ):(<><h4 style={{marginTop:'48px'}}>Not Login Yet!</h4>
             <h4>{data.slug}'s bookmarks</h4></>
         )
@@ -234,19 +299,29 @@ const Bookmark = ({data, loading, error}) => {
                 boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
           }}>
             {allBookmarks.length ? (
-              allBookmarks.map(post => <Post post={post} key={post.id}/>)
+              allBookmarks.map(post => <Post post={post} isAuthenticated={isAuthenticated} user={user} key={post.id}/>)
             ) : (
               <p>No posts to display</p>
             )}
+            <article style={{
+                  padding: '0.5em',
+                  display: 'block',
+                  background: 'white',
+                  marginBottom: '-1em',
+                  border: '1px solid hsla(200, 20%, 20%, 0.20)',
+                  overflow: 'hidden'
+                }}
+                >
+                      <div style={{overflow: 'hidden',whiteSpace:'nowrap',display:'inline'}}>
+                        <center><h3 style={{color: '#29363D'}}>No More ... </h3></center>
+                      </div>
+            </article>
           </div>
         )}
       </section>
     </Layout>
   );
 }
-
-
-
 
 const PostPage = ({userslug}) =>  {
 

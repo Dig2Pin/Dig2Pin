@@ -26,6 +26,7 @@
     "@keystonejs/app-next": "^5.1.2",
     "@keystonejs/app-static": "^5.1.2",
     "@keystonejs/auth-password": "^5.1.7",
+    "@keystonejs/email": "^5.1.5",
     "@keystonejs/fields": "^11.0.0",
     "@keystonejs/fields-authed-relationship": "^1.0.5",
     "@keystonejs/fields-wysiwyg-tinymce": "^5.2.8",
@@ -35,11 +36,15 @@
     "apollo-upload-client": "^13.0.0",
     "cross-env": "^7.0.0",
     "dotenv": "^8.2.0",
+    "facepaint": "^1.2.1",
+    "get-contrast": "^2.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "link-cleaner": "^1.0.0",
     "meta-extractor": "^2.0.0",
+    "nodemailer": "^6.4.8",
     "normalize-url": "^5.0.0",
     "react": "^16.13.1",
-    "react-apollo": "^3.1.5"
+    "react-apollo": "^3.1.5",
+    "uuid": "^8.1.0"
   }
 }

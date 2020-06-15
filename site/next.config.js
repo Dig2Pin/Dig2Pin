@@ -12,5 +12,10 @@ module.exports = {
   publicRuntimeConfig: {
     // Will be available on both server and client
     serverUrl,
+	logo: {
+		src: '/logo.png',
+		width: 96,
+		height: 96,
+	},
   },
 };

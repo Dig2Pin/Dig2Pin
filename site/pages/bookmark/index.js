@@ -35,8 +35,8 @@ const Post = ({ post }) => {
         }}
       >
         <article style={{ padding: '1em' }}>
-        <Link href={`/pinned/${post.id}`}>
-          <a style={{color: '#29363D',textDecoration: 'none',}}>
+        <Link href={`/bookmark/pinned/${post.id}`}>
+          <a style={{color: '#29363D',textDecoration: 'none'}} target='_blank'>
             <h3 style={{color: '#29363D',}}>{post.title}</h3>
             <p style={{color: '#29363D',}}>{post.description}</p>
           </a>

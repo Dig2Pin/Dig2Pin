@@ -39,7 +39,9 @@ exports.User = {
           recipientEmail: updatedItem.email,
           signinUrl: `${url}/signin`,
         };
-          // create reusable transporter object using the default SMTP transport
+
+        async function main() {
+          let testAccount = await nodemailer.createTestAccount();
           let transporter = nodemailer.createTransport({
               host: process.env.SMTP_HOST,
               port: process.env.SMTP_PORT,

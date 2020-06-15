@@ -12,6 +12,7 @@ import Layout from '../../templates/layout';
 import Header from '../../components/header';
 import { Banner } from '../../components/banner';
 import { useAuth } from '../../lib/authentication';
+import AuthModal from '../../components/auth/modal';
 
 /** @jsx jsx */
 
@@ -436,9 +437,20 @@ const AddComments = ({ post }) => {
           )}
           {!loggedIn && (
             <Banner style={'error'}>
-              <a href="/signin" as="/signin">
-                Sign In
-              </a>{' '}
+            <AuthModal mode="signin">
+              {({ openModal }) => (
+                <>
+                  <button style={{
+                    margin:'0.2em',
+                    border: '1px solid transparent',
+                    background:'transparent'
+                  }} 
+                  href="/signin" onClick={openModal}>
+                    Sign In
+                  </button>
+                </>
+              )}
+            </AuthModal>
               to leave a comment.
             </Banner>
           )}

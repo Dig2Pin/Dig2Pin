@@ -16,7 +16,6 @@ const ThemeContext = createContext();
 const useTheme = () => useContext(ThemeContext);
 
 const { publicRuntimeConfig } = getConfig();
-const { meetup } = publicRuntimeConfig;
 
 const NavAnchor = forwardRef((props, ref) => {
   const { foreground } = useTheme();
@@ -53,10 +52,10 @@ const NavLink = ({ href, as, ...props }) => (
 const NavButton = props => (
   <NavLink
     css={mq({
-      backgroundColor: meetup.themeColor,
+
       border: 'none',
       borderRadius: 40,
-      color: getForegroundColor(meetup.themeColor),
+
       fontWeight: 600,
       lineHeight: 1,
       marginRight: [0, 0],
@@ -153,10 +152,10 @@ const Navbar = ({ background = 'white', ...props }) => {
         <Link href="/" passHref>
           <a>
             <img
-              src={meetup.logo.src}
+              src={publicRuntimeConfig.logo.src}
               width={logoWidth}
               height={logoHeight}
-              alt={meetup.name}
+              alt={publicRuntimeConfig.name}
               css={mq({
                 boxShadow: shadows.sm,
                 marginRight: [gridSize, gridSize * 2],

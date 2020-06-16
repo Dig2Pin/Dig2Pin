@@ -10,7 +10,7 @@ export default {
     },
     {
       label: 'People',
-      children: ['User'],
+      children: ['User','ForgottenPasswordToken'],
     },
   ],
 };

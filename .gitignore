@@ -2,12 +2,17 @@
 .env
 .DS_Store
 .gitattributes
+Dockerfile
+.dockerignore
 CHANGELOG.md
 package-lock.json
 yarn.lock
 
 /node_modules
 /dist
+
+/site/pages/test
+/site/pages/test1.js
 
 #ignore files end with
 *.pem

@@ -11,7 +11,7 @@ const {
 } = getConfig();
 
 export const makeMetaUrl = path => {
-  const base = 'http://localhost:3000';
+  const base = 'publicRuntimeConfig.siteUrl';
   const url = base.endsWith('/') ? base.slice(0, base.length - 1) : base;
   return `${url}${path}`;
 };

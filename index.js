@@ -8,7 +8,7 @@ const { NextApp } = require('@keystonejs/app-next');
 const { StaticApp } = require('@keystonejs/app-static');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
-const adapterConfig = { mongoUri: process.env.MONGODB_URL };
+const adapterConfig = { mongoUri: process.env.MONGO_URI };
 const initialiseData = require('./data/initial-data');
 const { staticRoute, staticPath, distDir } = require('./config');
 
@@ -16,7 +16,14 @@ const { staticRoute, staticPath, distDir } = require('./config');
 const keystone = new Keystone({
   name: process.env.PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData
+  onConnect: initialiseData,
+  cookieSecret:process.env.COOKIE_SECRET,
+  cookie: {
+    //secure: process.env.NODE_ENV === 'production', // Default to true in production
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    sameSite: false,
+  },
+
 });
 
 

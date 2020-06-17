@@ -55,7 +55,7 @@ AAAAA --> AAAAAA[Release beta version.]
 
 3. Make sure you have yarn by $ yarn --version
 
-4. MongoDB >= 4.x; $ mongod
+4. MongoDB >= 4.x; $ mongod (brew services start mongodb-community)
 
 5. Open another window $ git clone https://github.com/Dig2Pin/Dig2Pin
 

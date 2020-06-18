@@ -1,5 +1,6 @@
 #ignore files
 .env
+.env.secret
 .DS_Store
 .gitattributes
 Dockerfile

@@ -549,8 +549,8 @@ const PostPage = ({ slug }) => {
                   </Head>
                   <article css={{ padding: '1em' }}>
                   <a href={post.url} css={{textDecoration: 'none'}} target="_blank">
-                    <h1 css={{ marginTop: 0 }}>{post.title}</h1>
-                    <p css={{ marginTop: 0 }}> 👉 &nbsp; {post.url}</p>
+                    <h5 css={{ marginTop: 0 }}>{post.title}</h5>
+                    <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>
                   </a>
                     <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>

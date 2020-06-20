@@ -77,7 +77,7 @@ const Pined = () => {
             css={{
               width: '31%',
               height:0,
-              paddingBottom:'15%',
+              paddingBottom:'20%',
               float:'left',
               background:'white',
               borderRadius: 6,
@@ -92,7 +92,7 @@ const Pined = () => {
             <a style={{textDecoration: 'none'}}>
               <div style={{margin:'1em'}}>
                 <p style={{color: 'hsl(200, 20%, 50%)',borderBottom: '1px solid hsl(200, 20%, 80%)'}} >Pinned By: {p.bookmark.owner.userName}</p>
-                <h5 style={{color: '#29363D',marginTop:'-10px'}}>{p.title}</h5>
+                <h5 style={{color: '#29363D',marginTop:'-10px'}}>{p.title.substring(0,30)}</h5>
                 <p style={{color: 'hsl(200, 20%, 50%)'}} >{p.body}</p>
               </div>
             </a>
@@ -122,9 +122,13 @@ const Post = ({ post }) => {
         }}
       >
         <article css={{ padding: '1em' }}>
-          <h3 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h3>
+          <h5 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h5>
           <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-            {post.url.substring(7,46)}...
+            {post.url.domain}...
+          </p>
+
+          <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+            {post.url.split('/').slice(3).join('/').substring(0,20)}...
           </p>
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>

@@ -9,6 +9,8 @@ export default () => {
   const { isAuthenticated} = useAuth();
 
   return(
+    <>
+    <style dangerouslySetInnerHTML={{__html: "@media (max-width: 580px) { .logo { width:45%!important;}}\n@media (min-width: 580px) and (max-width: 900px) { .logo { width:30%!important}} " }} />
     <header
       css={{
         display: 'flex',
@@ -18,7 +20,7 @@ export default () => {
       }}
     >
       <Link href="/" passHref>
-      <img src="/logo.png" alt="Dig2Pin.Cpm" style={{width:'20%'}} />
+      <img className='logo' src="/logo.png" alt="Dig2Pin.Com" style={{width:'20%'}} />
       </Link>
       { isAuthenticated ? (
             <Link href="/post/new" passHref>
@@ -58,5 +60,6 @@ export default () => {
         )
       }
     </header>
+    </>
     )
 };

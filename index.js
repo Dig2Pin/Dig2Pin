@@ -13,21 +13,34 @@ const initialiseData = require('./data/initial-data');
 const { staticRoute, staticPath, distDir } = require('./config');
 
 
+const expressSession = require('express-session');
+const MongoStore = require('connect-mongo')(expressSession);
+
+const cors = require('cors');
+
+
+
+
 const keystone = new Keystone({
   name: process.env.PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
+  sessionStore: !process.env.IS_BUILD_STAGE ? new MongoStore({ url: process.env.MONGO_URI }) : null,
   onConnect: initialiseData,
+
+
   cookieSecret:process.env.COOKIE_SECRET,
+
   cookie: {
-    //secure: process.env.NODE_ENV === 'production', // Default to true in production
+    secure: process.env.NODE_ENV === 'production', // Default to true in production
     maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
     sameSite: false,
   },
 
+
 });
 
 
-//import schema start
+//import schema starż
 const {User,ForgottenPasswordToken,customSchema} = require('./data/User.js');
 const {Url} = require('./data/Url.js');
 const {Comment} = require('./data/Comment.js');
@@ -56,35 +69,27 @@ const adminApp = new AdminUIApp({
   authStrategy,
 });
 
+ 
 
 module.exports = {
   keystone,
-  apps: [
 
-    new GraphQLApp(),
+  configureExpress: app => {
+  app.set('trust proxy',true);
+  },
+
+  apps: [
+    new GraphQLApp({
+        apollo: {
+          tracing: true,
+          cacheControl: {
+            defaultMaxAge: 3600,
+          },
+        },
+      }),
     adminApp,
     new StaticApp({ path: staticRoute, src: staticPath }),
     new NextApp({ dir: 'site' }),
   ],
     distDir,
 };
-
-
-
-/*
-const adminApp = new AdminUIApp({
-  adminPath: '/admin',
-  authStrategy,
-  pages: [
-    {
-      label: 'Meetup',
-      children: ['Event', 'Talk', 'Organiser', 'Sponsor'],
-    },
-    {
-      label: 'People',
-      children: ['User', 'Rsvp'],
-    },
-  ],
-});
-
-*/

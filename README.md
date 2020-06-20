@@ -46,17 +46,17 @@ AAAAA --> AAAAAA[Release beta version.]
 
 # install through docker
 
-```
+
 1. Make sure you have docker and docker-compose
 
-2.Create a project folder, put the file [docker-compose.yml](https://github.com/Dig2Pin/Dig2Pin/blob/master/docker-compose.yml) and [.env.example](https://github.com/Dig2Pin/Dig2Pin/blob/master/.env.example) in the folder
+2. Create a project folder, put the file [docker-compose.yml](https://github.com/Dig2Pin/Dig2Pin/blob/master/docker-compose.yml) and [.env.example](https://github.com/Dig2Pin/Dig2Pin/blob/master/.env.example) in the folder
 
-3.Change [.env.example](https://github.com/Dig2Pin/Dig2Pin/blob/master/.env.example) into .env.secret, Set your environment parameters in the .env.secret file
+3. Change [.env.example](https://github.com/Dig2Pin/Dig2Pin/blob/master/.env.example) into .env.secret, Set your environment parameters in the .env.secret file
 
 4. Inside the folder $ docker-compose up -d
 
 5. Check http://localhost (You may not able to log in, you heed to have your own domain name and HTTPS. Check .env.example)
-```
+
 
 
 # build with us

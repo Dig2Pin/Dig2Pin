@@ -55,13 +55,13 @@ AAAAA --> AAAAAA[Release beta version.]
 
 4. Inside the folder $ docker-compose up -d
 
-5. Check http://localhost (You may not able to login, you heed to have your own domain name and HTTPS. Check .env.example)
+5. Check http://localhost (You may not able to log in, you heed to have your own domain name and HTTPS. Check .env.example)
 ```
 
 
 # build with us
 
-### We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
+### We'll use the CMS Node.js framework [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 
 
 ```
 1. Make sure you have Node.js >= 10.x by $ node --version
@@ -86,9 +86,9 @@ AAAAA --> AAAAAA[Release beta version.]
 
 ```
 
-files inside site folder is copy from keystone blog example, need to modify.
+files inside the site folder are copied from keystone blog example, need to modify.
 
 # Join Us
-We are team from MeetUGo.Com platform,  which is a social calendar. We find out people have need to find more useful events in their social network. And we upgrade the idea to more formal links.
+We are a team from MeetUGo.Com platform,  which is a social calendar. We find out people have need to find more useful events in their social network. And we upgrade the idea to more formal links.
 
 We are in the early stage. Contact us via huanry@mail.meetugo.com

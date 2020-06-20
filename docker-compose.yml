@@ -1,0 +1,24 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/data/db:/data/db
+    networks:
+      - webapp-network
+  web:
+    image: meetugo/dig2pin:alpha1.0.2
+    env_file:
+      - ./.env.secret
+    depends_on:
+      - mongo
+    ports:
+      - 3000:3000
+      - 80:3000
+    networks:
+      - webapp-network
+networks:
+  webapp-network:
+    driver: bridge

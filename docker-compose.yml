@@ -9,7 +9,7 @@ services:
     networks:
       - webapp-network
   web:
-    image: meetugo/dig2pin:alpha1.0.2
+    image: meetugo/dig2pin:alpha1.0
     env_file:
       - ./.env.secret
     depends_on:

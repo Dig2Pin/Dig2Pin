@@ -18,7 +18,7 @@ function create(initialState, req) {
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: createUploadLink({
       uri: `${serverUrl}/admin/api`, // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+      credentials: 'include', // Additional fetch() options like `credentials` or `headers`
       fetch,
       headers: req && req.headers,
     }),

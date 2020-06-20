@@ -44,6 +44,21 @@ AAAAA --> AAAAAA[Release beta version.]
 
 ```
 
+# install through docker
+
+```
+1.Make sure you have docker and docker-compose
+
+2.Create a project folder, put the file docker-compose.yml and .env.example in the folder
+
+3.Change .env.example into .env.secret, Set your environment parameters in the .env.secret file
+
+4. Inside the folder $ docker-compose up -d
+
+5. Check http://localhost (You may not able to login, you heed to have your own domain name and HTTPS. Check .env.example)
+```
+
+
 # build with us
 
 ### We'll use the CMS Node.js framwork [keystone.js](https://github.com/keystonejs/keystone) to get start our project. 

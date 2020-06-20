@@ -37,6 +37,7 @@ module.exports = async keystone => {
 };
 
 
+
 const initialData =
   {
     User:[
@@ -46,7 +47,14 @@ const initialData =
         email: process.env.adminEmail,
         isAdmin: true,
         password,
-      }
+      },
+      {
+        userName: 'Demo',
+        slug:'demo',
+        email: 'demo@dig2pin.com',
+        isAdmin: false,
+        password,
+      },
     ],
   };
 

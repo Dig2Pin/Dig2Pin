@@ -42,7 +42,7 @@ const GET_AUTH_BOOKMARKS = gql`
 
 const GET_BOOKMARKS = gql`
   query GetBookmarks($url: ID!){
-    allPins(first: 3, where:{url:{id:$url}}){
+    allPins(first: 3,sortBy: created_DESC, where:{url:{id:$url}}){
         id
         bookmark{
           id
@@ -125,7 +125,7 @@ const { data, loading, error } = useQuery(GET_BOOKMARKS, { variables: { url:post
 
  return(
   <>
-  <style dangerouslySetInnerHTML={{__html: "@media (max-width: 580px) { .recom { width:98%;padding-bottom:49%}}\n@media (min-width: 580px) and (max-width: 900px) { .recom { width:47%;padding-bottom:24%}} " }} />
+  <style dangerouslySetInnerHTML={{__html: "@media (max-width: 600px) { .recom { width:98%;padding-bottom:164px}}\n@media (min-width: 600px) and (max-width: 900px) { .recom { width:47%;padding-bottom:164px}} " }} />
     {data.allPins.length
       ? (<div>
         <h2>The URL is pin on the bookmarks.</h2>
@@ -136,7 +136,7 @@ const { data, loading, error } = useQuery(GET_BOOKMARKS, { variables: { url:post
             css={{
               width: '31%',
               height:0,
-              paddingBottom:'15%',
+              paddingBottom:'188px',
               float:'left',
               background:'white',
               borderRadius: 6,
@@ -149,7 +149,7 @@ const { data, loading, error } = useQuery(GET_BOOKMARKS, { variables: { url:post
           >
           <Link href={`/bookmark/pinned/${p.bookmark.id}`}>
             <a target="_blank">
-              <div style={{margin:'1em'}}>
+              <div style={{margin:'1em',overflow: 'hidden'}}>
                 <h5>{p.bookmark.title}</h5>
                 <p>{p.bookmark.description}</p>
               </div>
@@ -255,7 +255,7 @@ const Bookmarks = ({post}) => {
                   setBookmark('');
                 }}   
               >
-                <select className="form-control" required="true" name="bookmarks" value={bookmark} 
+                <select className="form-control" required={true} name="bookmarks" value={bookmark} 
                   onChange={event => {
                         setBookmark(event.target.value);
                 }} >
@@ -324,7 +324,7 @@ const Bookmarks = ({post}) => {
               <input
               className='form-control'
               type="text"
-              required="true"
+              required={true}
               placeholder="Add New Bookmark"
               name="createBookmarkTitle"
               value={createBookmarkTitle}
@@ -336,7 +336,7 @@ const Bookmarks = ({post}) => {
               <input
               className='form-control'
               type="text"
-              required="true"
+              required={true}
               placeholder="New Bookmark description"
               name="createBookmarkDescription"
               value={createBookmarkDescription}
@@ -470,7 +470,7 @@ const AddComments = ({ post }) => {
           >
             <textarea
               className="form-control"
-              required="true"
+              required={true}
               type="text"
               placeholder="Write a comment"
               name="comment"
@@ -547,7 +547,7 @@ const PostPage = ({ slug }) => {
                   <Head>
                     <title>{post.title}</title>
                   </Head>
-                  <article css={{ padding: '1em' }}>
+                  <article css={{ margin: '1em',overflow: 'hidden'}}>
                   <a href={post.url} css={{textDecoration: 'none'}} target="_blank">
                     <h5 css={{ marginTop: 0 }}>{post.title}</h5>
                     <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>

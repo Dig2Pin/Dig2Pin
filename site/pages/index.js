@@ -27,6 +27,7 @@ const GET_URL =
   gql`
       query GetUrl($count:Int!){
         allUrls(first:$count,sortBy: posted_DESC){
+          id
           slug
           title
           url
@@ -66,18 +67,17 @@ const Pined = () => {
 
  return(
   <>
-  <style dangerouslySetInnerHTML={{__html: "@media (max-width: 580px) { .recom { width:98%;padding-bottom:49%}}\n@media (min-width: 580px) and (max-width: 900px) { .recom { width:47%;padding-bottom:24%}} " }} />
+  <style dangerouslySetInnerHTML={{__html: "@media (max-width: 600px) { .recom { width:98%;padding-bottom:180px}}\n@media (min-width: 600px) and (max-width: 900px) { .recom { width:47%;padding-bottom:180px}} " }} />
     {data.allPins.length
       ? (<div>
         <h2>Latest Pinned</h2>
         {data.allPins.map(p => (
           <div
-            key={p.id}
             className ='recom'
             css={{
               width: '31%',
               height:0,
-              paddingBottom:'20%',
+              paddingBottom:'155px',
               float:'left',
               background:'white',
               borderRadius: 6,
@@ -92,8 +92,8 @@ const Pined = () => {
             <a style={{textDecoration: 'none'}}>
               <div style={{margin:'1em'}}>
                 <p style={{color: 'hsl(200, 20%, 50%)',borderBottom: '1px solid hsl(200, 20%, 80%)'}} >Pinned By: {p.bookmark.owner.userName}</p>
-                <h5 style={{color: '#29363D',marginTop:'-10px'}}>{p.title.substring(0,30)}</h5>
-                <p style={{color: 'hsl(200, 20%, 50%)'}} >{p.body}</p>
+                <h5 style={{color: '#29363D',marginTop:'-10px'}}>{p.title.substring(0,39)} ...</h5>
+                <section style={{color: 'hsl(200, 20%, 50%)'}} dangerouslySetInnerHTML={{ __html: p.body }} />
               </div>
             </a>
           </Link>
@@ -121,14 +121,10 @@ const Post = ({ post }) => {
           textDecoration: 'none',
         }}
       >
-        <article css={{ padding: '1em' }}>
+        <article css={{ padding: '1em', overflow: 'hidden'}}>
           <h5 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h5>
           <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-            {post.url.domain}...
-          </p>
-
-          <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-            {post.url.split('/').slice(3).join('/').substring(0,20)}...
+            {post.url.split('/').slice(2).join('/')}
           </p>
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
@@ -191,7 +187,7 @@ export default () => {
         and comment interesting instant links in your friend circle. Check our github page to join us.
         </p>
       </section>
-      <section>
+      <section css={{ marginBottom: '-24px' }}>
       <Pined/>
       </section>
       <section css={{ margin: '48px 0' }}>
@@ -203,7 +199,7 @@ export default () => {
         ) : (
           <div>
             {data.allUrls.length ? (
-              data.allUrls.map(post => <Post post={post} key={post.id} />)
+              data.allUrls.map(post => <Post post={post}/>)
             ) : (
               <p>No posts to display</p>
             )}

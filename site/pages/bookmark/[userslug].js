@@ -105,15 +105,26 @@ const Post = ({ post, user, isAuthenticated}) => {
   if(error){return(null)};
 
   return (
+    <>
+      {isAuthenticated ? (
+        (post.owner.id == user.id) ? (
+          <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100% - 5.5em)}" }} />
+        ):(
+          <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100%)}" }} />
+        )
+        ):(
+        <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100%)}" }} />
+        )}
   <article style={{
     padding: '0.5em',
     display: 'block',
     background: 'white',
     marginBottom: '-1em',
     border: '1px solid hsla(200, 20%, 20%, 0.20)',
-    overflow: 'hidden'
+    overflow: 'hidden',
   }}
   >
+  <div className='postBox' style={{overflow: 'hidden',}}>
     <Link href={`/bookmark/pinned/${post.id}`}>
       <a style={{
           textDecoration: 'none',
@@ -124,6 +135,7 @@ const Post = ({ post, user, isAuthenticated}) => {
         </div>
       </a>
     </Link>
+  </div>
     {isAuthenticated ? (
       (post.owner.id == user.id) ? (
         data._allPinsMeta.count ? (
@@ -142,6 +154,7 @@ const Post = ({ post, user, isAuthenticated}) => {
 
       ):(null)}
     </article>
+    </>
   );
 };
 

@@ -55,7 +55,7 @@ const DPin = ({ID}) => {
           <button
             style={{
               padding: '6px 12px',
-              width:'30%',
+              width:'5em',
               fontSize:'1em',
               height:'2em',
               marginTop:'-2.7em',
@@ -87,6 +87,18 @@ const Post = ({ post }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
   if(isLoading){return(<p>User Loding</p>)};
   return (
+    <>
+          {isAuthenticated ? (
+            (user.id == post.bookmark.owner.id) ? (
+              <>
+                <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100% - 4.6em)}" }} />
+              </>
+              ):(
+              <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100%)}" }} />
+              )
+            ):(
+            <style type="text/css" dangerouslySetInnerHTML={{__html: " .postBox { width:calc(100%)}" }} />
+            )}
           <article style={{
               padding: '0.25em',
               display: 'block',
@@ -95,21 +107,23 @@ const Post = ({ post }) => {
               border: '1px solid hsla(200, 20%, 20%, 0.20)',
               overflow: 'hidden'
               }}>
-            <Link href={`/post/${post.url.slug}`}>
-              <a
-              target="_blank">
-              <div style={{
-                height:'1em',
-                marginBottom:'-2em',
-                marginTop:'0em',
-                overflow: 'hidden',
-                whiteSpace:'nowrap',
-                display:'inline'
-              }}>
-                <p style={{ fontSize:'1em',marginTop: 0, color: '#29363D'}}>{post.title}</p>
-              </div>
-              </a>
-            </Link>
+            <div style={{overflow: 'hidden',}} className='postBox'>
+              <Link href={`/post/${post.url.slug}`}>
+                <a
+                target="_blank">
+                <div style={{
+                  height:'1em',
+                  marginBottom:'-2em',
+                  marginTop:'0em',
+                  overflow: 'hidden',
+                  whiteSpace:'nowrap',
+                  display:'inline',
+                }}>
+                  <p style={{ fontSize:'1em',marginTop: 0, color: '#29363D'}}>{post.title}</p>
+                </div>
+                </a>
+              </Link>
+            </div>
             {isAuthenticated ? (
               (user.id == post.bookmark.owner.id) ? (
                 <>
@@ -118,6 +132,7 @@ const Post = ({ post }) => {
                 ):(null)
               ):(null)}
           </article>
+    </>
   );
 };
 

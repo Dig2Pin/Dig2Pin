@@ -24,7 +24,7 @@ const cors = require('cors');
 const keystone = new Keystone({
   name: process.env.PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  sessionStore: !process.env.IS_BUILD_STAGE ? new MongoStore({ url: process.env.MONGO_URI }) : null,
+//  sessionStore: !process.env.IS_BUILD_STAGE ? new MongoStore({ url: process.env.MONGO_URI }) : null,
   onConnect: initialiseData,
 
 

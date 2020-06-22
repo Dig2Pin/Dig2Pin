@@ -199,7 +199,7 @@ export default () => {
             variables: {
               url:normalizeUrl(removeUrlGarbage(url.toLowerCase())),
               title,
-              body,
+              body:body.replace(/\n/g,"<br />"),
               posted: new Date(),
             },
           });

@@ -195,6 +195,7 @@ const Bookmarks = ({post}) => {
     update: (cache, { data: { createBookmark } }) => {
       setResMarkId(createBookmark.id);setResMarkTitle(createBookmark.title);
     },
+    refetchQueries: ['GetAuthBookmark'],
   });
 
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -220,7 +221,21 @@ const Bookmarks = ({post}) => {
 
   if(createBookmarkLoading){return(<p>Loding to create bookmark</p>)};
 
-  if(!isAuthenticated){return(null)};
+  if(!isAuthenticated){return(
+    <AuthModal mode="signin">
+      {({ openModal }) => (
+        <>
+          <button
+            className="btn btn-secondary"
+            href="/signin"
+            style={{marginBottom:24}}
+            onClick={openModal}>
+            Pin it
+          </button>
+        </>
+      )}
+    </AuthModal>
+    )};
 
   if(pinBookmarkId){return(
     <h2 style={{ marginBottom: 32}}>
@@ -239,129 +254,146 @@ const Bookmarks = ({post}) => {
             <a target="_blank"> [{allPins[0].bookmark.title}]</a>
           </Link>
         </h2>
-        ):( <div style={{ marginBottom: 32}}>
-              <h2>Slect bookmark to pin</h2>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  createPin({
-                    variables: {
-                      url:post.id,
-                      title:post.title,
-                      description:post.description,
-                      bookmark,
-                    },
-                  });
-                  setBookmark('');
-                }}   
-              >
-                <select className="form-control" required={true} name="bookmarks" value={bookmark} 
-                  onChange={event => {
-                        setBookmark(event.target.value);
-                }} >
-                  {resMarkId ? (<option value={resMarkId}> {resMarkTitle} </option>):(
-                    <option value=""> (select one) </option>
-                    )
-                }
-                  {allBookmarks.length
-                    ? (
-                        allBookmarks.map(bookmark => (
-                        <option
-                          value={bookmark.id}
-                          key={bookmark.id}
-                        >
-                          {bookmark.title}
-                        </option>
-                        )
-                      )):(<option value="none">No Book Mark</option>)
-                  }
-                </select>
-                {resMarkId ? (
+        ):(
+        <div style={{ marginBottom: 32}}>
+          <h2>Select bookmark to pin</h2>
+          <div className="dropdown">
+            {resMarkId ? (
+                <button style={{background:'yellow',color:'black',border:0}} className="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pin it
+                </button>
+              ):(
+                <button className="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pin it
+                </button>
+              )}
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{width:'100%',marginTop:'-2.7em'}} >
+              <button id="addBookMark" data-toggle="dropdown" style={{border: 0, backgroundColor: 'transparent', outline: 'none'}} >
+              + Create a new bookmark
+              </button>
+              <div className="dropdown-menu" aria-labelledby="addBookMark" style={{width:'100%'}} >
+                <form
+                  style={{width:'100%',marginTop:'-10px'}}
+                  onSubmit={e => {
+                    e.preventDefault();
+                    createBookmark({
+                      variables: {
+                        createBookmarkTitle,
+                        createBookmarkDescription
+                      },
+                    });
+                    setCreateBookmarkTitle('');
+                    setCreateBookmarDescription('')
+                  }}
+                >
+                  <input
+                    className='form-control'
+                    type="text"
+                    required={true}
+                    placeholder="Add New Bookmark"
+                    name="createBookmarkTitle"
+                    value={createBookmarkTitle}
+                    onChange={event => {
+                      setCreateBookmarkTitle(event.target.value);
+                  }}
+                  />
+                  <input
+                    className='form-control'
+                    type="text"
+                    required={true}
+                    placeholder="New Bookmark description"
+                    name="createBookmarkDescription"
+                    value={createBookmarkDescription}
+                    onChange={event => {
+                      setCreateBookmarDescription(event.target.value);
+                  }}
+                  />
                   <input
                     type="submit"
-                    value="Pin"
-                    css={{
-                      padding: '6px 12px',
-                      borderRadius: 6,
-                      background: 'yellow',
-                      fontSize: '1em',
-                      color: 'black',
-                      border: 0,
-                      marginTop: 6,
-                      float:'right',
-                    }}
-                  />):(
-                  <input
-                    type="submit"
-                    value="Pin"
+                    value="Add"
                     css={{
                       padding: '6px 12px',
                       borderRadius: 6,
                       background: 'hsl(200, 20%, 50%)',
                       fontSize: '1em',
+                      margin:6,
                       color: 'white',
                       border: 0,
-                      marginTop: 6,
                       float:'right',
                     }}
                   />
+                </form>
+              </div>
+              <div>
+                { (allBookmarks.length || resMarkId) && (
+                    <form
+                      onSubmit={e => {
+                        e.preventDefault();
+                        createPin({
+                          variables: {
+                            url:post.id,
+                            title:post.title,
+                            description:post.description,
+                            bookmark,
+                          },
+                        });
+                        setBookmark('');
+                      }}   
+                    >
+                      <select className="form-control" required={true} name="bookmarks" value={bookmark}
+                        onChange={event => {
+                              setBookmark(event.target.value);
+                      }} >
+                        <option value=""> (select one bookmark) </option>
+                        {allBookmarks.map(bookmark => (
+                            <option
+                              value={bookmark.id}
+                              key={bookmark.id}
+                            >
+                              {bookmark.title}
+                            </option>
+                            )
+                          )
+                        }
+                      </select>
+                          {resMarkId ? (
+                            <input
+                              type="submit"
+                              value="Pin"
+                              css={{
+                                padding: '6px 12px',
+                                borderRadius: 6,
+                                background: 'yellow',
+                                fontSize: '1em',
+                                color: 'black',
+                                border: 0,
+                                margin: 6,
+                                float:'right',
+                              }}
+                            />):(
+                            <input
+                              type="submit"
+                              value="Pin"
+                              css={{
+                                padding: '6px 12px',
+                                borderRadius: 6,
+                                background: 'hsl(200, 20%, 50%)',
+                                fontSize: '1em',
+                                color: 'white',
+                                border: 0,
+                                margin: 6,
+                                float:'right',
+                              }}
+                            />
+                            )
+                          }
+                    </form>
                   )
                 }
-              </form>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  createBookmark({
-                    variables: {
-                      createBookmarkTitle,
-                      createBookmarkDescription
-                    },
-                  });
-                  setCreateBookmarkTitle('');
-                  setCreateBookmarDescription('')
-                }}
-              >
-              <input
-              className='form-control'
-              type="text"
-              required={true}
-              placeholder="Add New Bookmark"
-              name="createBookmarkTitle"
-              value={createBookmarkTitle}
-              style={{width:'30%',float:'left'}}
-              onChange={event => {
-                setCreateBookmarkTitle(event.target.value);
-              }}
-              />
-              <input
-              className='form-control'
-              type="text"
-              required={true}
-              placeholder="New Bookmark description"
-              name="createBookmarkDescription"
-              value={createBookmarkDescription}
-              style={{width:'30%',float:'left'}}
-              onChange={event => {
-                setCreateBookmarDescription(event.target.value);
-              }}
-              />
-                <input
-                  type="submit"
-                  value="+"
-                  css={{
-                    padding: '6px 12px',
-                    borderRadius: 6,
-                    background: 'hsl(200, 20%, 50%)',
-                    fontSize: '1em',
-                    color: 'white',
-                    border: 0,
-                    float:'left',
-                  }}
-                />
-              </form>
-              <div style={{clear:'both'}}>
-              </div>           
+              </div>
             </div>
+          </div>
+        </div>
         )
       }
     </>

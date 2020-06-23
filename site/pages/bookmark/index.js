@@ -31,24 +31,26 @@ const Post = ({ post }) => {
           display: 'block',
           background: 'white',
           marginBottom: -1,
-          border: '1px solid hsla(200, 20%, 20%, 0.20)'
+          border: '1px solid hsla(200, 20%, 20%, 0.20)',
         }}
       >
-        <article style={{ padding: '1em' }}>
-        <Link href={`/bookmark/pinned/${post.id}`}>
-          <a style={{color: '#29363D',textDecoration: 'none'}} target='_blank'>
-            <h3 style={{color: '#29363D',}}>{post.title}</h3>
-            <p style={{color: '#29363D',}}>{post.description}</p>
-          </a>
-        </Link>
-          <div style={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
-            <p style={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
-              Bookmarked by <Link href={`/bookmark/${post.owner.slug}`}>
-                  <a style={{color: '#FFCC99',textDecoration:'none'}}>
-                  {post.owner ? post.owner.userName : 'someone'}
-                  </a>
-              </Link>  
-            </p>
+        <article style={{ padding: '1em'}}>
+          <div style={{width:'100%',height:138 ,overflow:'auto',whiteSpace:'nowrap'}} >
+            <Link href={`/bookmark/pinned/${post.id}`}>
+              <a style={{color: '#29363D',textDecoration: 'none'}} target='_blank'>
+                <h3 style={{color: '#29363D',}}>{post.title}</h3>
+                <p style={{color: '#29363D',}}>{post.description}</p>
+              </a>
+            </Link>
+            <div style={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
+              <p style={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
+                Bookmarked by <Link href={`/bookmark/${post.owner.slug}`}>
+                    <a style={{color: '#FFCC99',textDecoration:'none'}}>
+                    {post.owner ? post.owner.userName : 'someone'}
+                    </a>
+                </Link>  
+              </p>
+            </div>
           </div>
         </article>
       </div>

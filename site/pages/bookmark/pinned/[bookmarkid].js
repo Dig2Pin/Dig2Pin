@@ -46,7 +46,7 @@ const UN_PIN = gql`
 const DPin = ({ID}) => {
 
   const [deletePin, { loading, error }] = useMutation(UN_PIN,{
-    refetchQueries: ['GetPins'],
+    refetchQueries: ['AllQueries'],
   });
 
   if(loading){return(<p></p>)};
@@ -105,9 +105,8 @@ const Post = ({ post }) => {
               background: 'white',
               marginBottom: '-1em',
               border: '1px solid hsla(200, 20%, 20%, 0.20)',
-              overflow: 'hidden'
               }}>
-            <div style={{overflow: 'hidden',}} className='postBox'>
+            <div style={{overflow: 'auto',whiteSpace:'nowrap',}} className='postBox'>
               <Link href={`/post/${post.url.slug}`}>
                 <a
                 target="_blank">
@@ -115,8 +114,6 @@ const Post = ({ post }) => {
                   height:'1em',
                   marginBottom:'-2em',
                   marginTop:'0em',
-                  overflow: 'hidden',
-                  whiteSpace:'nowrap',
                   display:'inline',
                 }}>
                   <p style={{ fontSize:'1em',marginTop: 0, color: '#29363D'}}>{post.title}</p>
@@ -187,10 +184,9 @@ const PinPage = ({bookmarkid}) =>  {
                     display: 'block',
                     background: 'white',
                     border: '1px solid hsla(200, 20%, 20%, 0.20)',
-                    overflow: 'hidden'
                     }}>
                     <div style={{
-                      overflow: 'hidden',
+                      overflow: 'auto',
                       whiteSpace:'nowrap',
                       marginBottom: '-0.8em',
                     }}>

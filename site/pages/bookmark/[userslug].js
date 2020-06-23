@@ -124,20 +124,20 @@ const Post = ({ post, user, isAuthenticated}) => {
     overflow: 'hidden',
   }}
   >
-  <div className='postBox' style={{overflow: 'hidden',}}>
+  <div className='postBox' style={{overflow: 'auto',}}>
     <Link href={`/bookmark/pinned/${post.id}`}>
       <a style={{
           textDecoration: 'none',
       }}>
-        <div style={{overflow: 'hidden',whiteSpace:'nowrap',display:'inline'}}>
+        <div style={{whiteSpace:'nowrap',display:'inline'}}>
           <h3 style={{color: '#29363D'}}>{post.title}</h3>
           <p style={{ color: '#29363D'}}>{data._allPinsMeta.count} pinned</p>
         </div>
       </a>
     </Link>
   </div>
-    {isAuthenticated ? (
-      (post.owner.id == user.id) ? (
+    {isAuthenticated && (
+      (post.owner.id == user.id) && (
         data._allPinsMeta.count ? (
           <div style={{
                 background: '#29363D',
@@ -150,9 +150,8 @@ const Post = ({ post, user, isAuthenticated}) => {
                 <p style={{marginTop:'1.6em',marginRight:'0.5em',marginLeft:'0.5em'}}>Pinned > 0</p>
           </div>
           ):(<Remove ID = {post.id}/>)
-      ):(null)
-
-      ):(null)}
+      )
+      )}
     </article>
     </>
   );

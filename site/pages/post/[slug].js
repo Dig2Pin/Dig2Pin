@@ -148,7 +148,7 @@ const { data, loading, error } = useQuery(GET_BOOKMARKS, { variables: { url:post
             }}
           >
           <Link href={`/bookmark/pinned/${p.bookmark.id}`}>
-            <a target="_blank">
+            <a target="_blank" style={{textDecoration: 'none',color: '#29363D',}} >
               <div style={{margin:'1em',overflow: 'hidden'}}>
                 <h5>{p.bookmark.title}</h5>
                 <p>{p.bookmark.description}</p>
@@ -241,7 +241,7 @@ const Bookmarks = ({post}) => {
     <h2 style={{ marginBottom: 32}}>
 
           <Link href={`/bookmark/pinned/${pinBookmarkId}`} passHref>
-            <a target="_blank">Pinned in {pinBookmarkTitle}!</a>
+            <a target="_blank" style={{textDecoration: 'none'}}>Pinned in {pinBookmarkTitle}!</a>
           </Link>
     </h2>
     )}
@@ -251,7 +251,7 @@ const Bookmarks = ({post}) => {
       {allPins.length ? (
         <h2 style={{ marginBottom: 32}}>Already pinned in :
           <Link href={`/bookmark/pinned/${allPins[0].bookmark.id}`} passHref>
-            <a target="_blank"> [{allPins[0].bookmark.title}]</a>
+            <a target="_blank" style={{textDecoration: 'none'}}> [{allPins[0].bookmark.title}]</a>
           </Link>
         </h2>
         ):(
@@ -580,10 +580,10 @@ const PostPage = ({ slug }) => {
                     <title>{post.title}</title>
                   </Head>
                   <article css={{ margin: '1em',overflow: 'hidden'}}>
-                  <a href={post.url} css={{textDecoration: 'none'}} target="_blank">
-                    <h5 css={{ marginTop: 0 }}>{post.title}</h5>
-                    <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>
-                  </a>
+                    <a href={post.url} style={{textDecoration: 'none'}} target="_blank">
+                      <h5 css={{ marginTop: 0 }}>{post.title}</h5>
+                      <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>
+                    </a>
                     <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
                       <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>

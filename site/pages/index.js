@@ -110,7 +110,7 @@ const Post = ({ post }) => {
   return (
     <Link href={`/post/[slug]?slug=${post.slug}`} as={`/post/${post.slug}`} passHref>
       <a
-        css={{
+        style={{
           display: 'block',
           background: 'white',
           boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)',
@@ -121,7 +121,7 @@ const Post = ({ post }) => {
           textDecoration: 'none',
         }}
       >
-        <article css={{ padding: '1em', overflow: 'hidden'}}>
+        <article css={{ margin: '1em', overflow: 'hidden'}}>
           <h5 css={{ marginTop: 0, color: '#29363D',}}>{post.title}</h5>
           <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
             {post.url.split('/').slice(2).join('/')}

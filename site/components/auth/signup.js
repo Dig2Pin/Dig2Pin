@@ -6,13 +6,13 @@ import Router from 'next/router';
 import { jsx } from '@emotion/core';
 
 import { useAuth } from '../../lib/authentication';
-import { Button, Field, Label, Input } from '../../primitives/forms';
+import { Button, Field, Label, Input, Link } from '../../primitives/forms';
 import { gridSize, colors } from '../../theme';
 import { CREATE_USER } from '../../graphql/users';
 
 const onChange = handler => e => handler(e.target.value);
 
-export default () => {
+export default ({onClickSignin}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +61,7 @@ export default () => {
             disabled={isLoading || isAuthenticated}
             id="name"
             onChange={onChange(setName)}
-            placeholder="full name"
+            placeholder="user name"
             required
             type="text"
             value={name}
@@ -101,6 +101,11 @@ export default () => {
           <Button type="submit">Sign up</Button>
         )}
       </form>
+      <div style={{marginTop:'2em'}}>
+        <Link href="/signin" onClick={onClickSignin}>
+          👉 &nbsp; Sign In
+        </Link>
+      </div>
     </>
   );
 };

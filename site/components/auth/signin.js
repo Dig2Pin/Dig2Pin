@@ -6,6 +6,7 @@ import { jsx } from '@emotion/core';
 import { useAuth } from '../../lib/authentication';
 import { Button, Field, Group, Label, Link, Input } from '../../primitives/forms';
 import { gridSize, colors } from '../../theme';
+import AuthModal from './modal';
 
 const onChange = handler => e => handler(e.target.value);
 
@@ -74,11 +75,24 @@ export default ({ onSuccess, onClickForgot }) => {
           ) : (
             <Button type="submit">Sign in</Button>
           )}
-          <Link href="/forgot-password" onClick={onClickForgot}>
-            Forgot password
-          </Link>
         </Group>
       </form>
+      <Group style={{marginTop:'2em'}}>
+        <AuthModal mode="signup">
+          {({ openModal }) => (
+            <>
+              <button style={{background:'transparent',border:0,color:'#29363D'
+               
+            }} href="/signup" onClick={openModal}>
+                👉 &nbsp; Sign Up
+              </button>
+            </>
+          )}
+        </AuthModal>
+        <Link href="/forgot-password" onClick={onClickForgot}>
+          👉 &nbsp; Forgot password
+        </Link>
+      </Group>
     </>
   );
 };

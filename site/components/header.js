@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { jsx } from '@emotion/core';
 import { useAuth } from '../lib/authentication';
 import AuthModal from '../components/auth/modal';
+import Router from 'next/router';
 
 /** @jsx jsx */
 
@@ -23,9 +24,16 @@ export default () => {
       <img className='logo' src="/logo.png" alt="Dig2Pin.Com" style={{width:'20%'}} />
       </Link>
       { isAuthenticated ? (
-            <Link href="/post/new" passHref>
-              <a css={{ color: 'hsl(200, 20%, 50%)', cursor: 'pointer' }}>+ Share an URL</a>
-            </Link>
+                <button style={{
+                  margin:'0.2em',
+                  borderRadius:'0.25em',
+                  background: 'hsl(200, 20%, 50%)',
+                  color:'white',
+                  float:'right'}}
+                  onClick={event => {Router.push('/post/new')
+                  }}>
+                  ＋ Post
+                </button>
         ):(
             <div>
             <AuthModal mode="signin">
@@ -35,23 +43,29 @@ export default () => {
                     margin:'0.2em',
                     borderRadius:'0.25em',
                     background: 'hsl(200, 20%, 50%)',
-                    color:'white'
-                  }} href="/signin" onClick={openModal}>
-                    Sign In
+                    color:'white',
+                    float:'right'
+                  }} 
+                  href="/signin"
+                  onClick={openModal}>
+                    ＋ Post
                   </button>
                 </>
               )}
             </AuthModal>
-            <AuthModal mode="signup">
+            <AuthModal mode="signin">
               {({ openModal }) => (
                 <>
                   <button style={{
                     margin:'0.2em',
                     borderRadius:'0.25em',
                     background: 'hsl(200, 20%, 50%)',
-                    color:'white'                    
-                }} href="/signup" onClick={openModal}>
-                    Sign Up
+                    color:'white',
+                    float:'right'
+                  }} 
+                  href="/signin"
+                  onClick={openModal}>
+                    ＋ Sign In
                   </button>
                 </>
               )}

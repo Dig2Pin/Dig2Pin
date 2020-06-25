@@ -13,6 +13,7 @@ import Header from '../../components/header';
 import { Banner } from '../../components/banner';
 import { useAuth } from '../../lib/authentication';
 import AuthModal from '../../components/auth/modal';
+import Microlink from '@microlink/react'
 
 /** @jsx jsx */
 
@@ -580,10 +581,12 @@ const PostPage = ({ slug }) => {
                     <title>{post.title}</title>
                   </Head>
                   <article css={{ margin: '1em',overflow: 'hidden'}}>
-                    <a href={post.url} style={{textDecoration: 'none'}} target="_blank">
+                    <a href={post.url} style={{textDecoration: 'none',color: '#29363D'}} target="_blank">
                       <h5 css={{ marginTop: 0 }}>{post.title}</h5>
                       <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>
                     </a>
+                    <Microlink url={post.url} style={{maxWidth: '100%'}} size='large'/>
+                    <section style={{marginTop:'1em'}}>Description:</section>
                     <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
                       <p css={{ fontSize: '0.8em', marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>

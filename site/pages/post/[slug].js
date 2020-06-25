@@ -545,6 +545,22 @@ const AddComments = ({ post }) => {
 
 const Render = ({ children }) => children();
 
+
+const CustomComponent = ({ loading, preview }) => {
+    return( loading 
+    ? (<h1>Loading...</h1>)
+    : (
+        <div>
+            <p>Domain: { preview.domain }</p>
+            <p>Title: { preview.title }</p>
+            <p>Description: { preview.description }</p>
+            <img height="100px" width="100px" src={preview.img} alt={preview.title} />
+        </div>
+    )
+    
+    )
+}
+
 const PostPage = ({ slug }) => {
 
   const { data, loading, error } = useQuery(ALL_QUERIES, { variables: { slug } });
@@ -579,13 +595,15 @@ const PostPage = ({ slug }) => {
                 >
                   <Head>
                     <title>{post.title}</title>
+                    <meta name="og:image" content={`https://api.microlink.io?url=${post.url}&image&embed=image.url`} />
+                    <meta property="og:description" content={post.description} />
                   </Head>
                   <article css={{ margin: '1em',overflow: 'hidden'}}>
                     <a href={post.url} style={{textDecoration: 'none',color: '#29363D'}} target="_blank">
                       <h5 css={{ marginTop: 0 }}>{post.title}</h5>
                       <p css={{ marginTop: 0}}> 👉 &nbsp; {post.url}</p>
                     </a>
-                    <Microlink url={post.url} style={{maxWidth: '100%'}} size='large'/>
+                    <Microlink url={post.url} style={{maxWidth: '100%'}}  render={CustomComponent} />
                     <section style={{marginTop:'1em'}}>Description:</section>
                     <section dangerouslySetInnerHTML={{ __html: post.description }} />
                     <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>

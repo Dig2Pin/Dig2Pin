@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Head from 'next/head';
 
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
@@ -156,6 +157,11 @@ export default () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Dig2Pin.Com</title>
+        <meta name="og:image" content='./image-2.png' />
+        <meta property="og:description" content='A social bookmark to discover & pin interest links. Signin to try it now!' />
+      </Head>
       <Header />
       <nav style={{backgroundColor: 'lightyellow', padding: '0.5rem', marginTop: '2rem', boxShadow: '0px 10px 20px hsla(200, 20%, 20%, 0.20)', borderRadius: '6px'}}>
         <ul className="nav" >

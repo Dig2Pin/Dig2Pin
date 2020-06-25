@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 import Layout from '../templates/layout';
 import Header from '../components/header';
+import Microlink from '@microlink/react'
 //import { withApollo } from '../lib/apollo';
 
 
@@ -108,6 +109,7 @@ const Pined = () => {
 
 const Post = ({ post }) => {
   return (
+    <>
     <Link href={`/post/[slug]?slug=${post.slug}`} as={`/post/${post.slug}`} passHref>
       <a
         style={{
@@ -126,6 +128,7 @@ const Post = ({ post }) => {
           <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
             {post.url.split('/').slice(2).join('/')}
           </p>
+          <Microlink url={post.url} style={{maxWidth: '100%',borderRadius: '0.42857em'}}/>
           <div css={{ marginTop: '1em', borderTop: '1px solid hsl(200, 20%, 80%)' }}>
             <p css={{ marginBottom: 0, color: 'hsl(200, 20%, 50%)' }}>
               Shared by {post.author ? post.author.userName : 'someone'} on{' '}
@@ -135,6 +138,7 @@ const Post = ({ post }) => {
         </article>
       </a>
     </Link>
+    </>
   );
 };
 

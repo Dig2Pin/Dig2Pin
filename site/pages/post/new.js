@@ -9,6 +9,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import Layout from '../../templates/layout';
 import { Banner } from '../../components/banner';
+import AuthModal from '../../components/auth/modal';
 
 const FormGroup = styled.div({
   display: 'flex',
@@ -88,7 +89,7 @@ export default () => {
       <Link href="/" passHref>
       <a css={{ color: 'hsl(200,20%,50%)', cursor: 'pointer' }}>{'< Go Back'}</a>
       </Link>
-      <h1>Share an Url</h1>
+      <h1>Share an URL</h1>
       {userLoading ? (
         <p>loading...</p>
         ) : (
@@ -102,9 +103,19 @@ export default () => {
           )}
         {!loggedIn && (
           <Banner style={'error'}>
-          <a href="/signin" as="/signin">
-          Sign In
-          </a>{' '}
+          <AuthModal mode="signin">
+            {({ openModal }) => (
+              <>
+                <button
+                  href="/signin"
+                  style={{background:'transparent',border:'0'}}
+                  onClick={openModal}>
+                  Sign In
+                </button>
+              </>
+            )}
+          </AuthModal>
+          {' '}
           to create a post.
           </Banner>
           )}
@@ -120,7 +131,7 @@ export default () => {
       }}
       >
       <FormGroup>
-      <Label htmlFor="url">Url:</Label>
+      <Label htmlFor="url">URL:</Label>
       <Input
       required
       className="form-control"
@@ -169,7 +180,7 @@ export default () => {
       <Link href="/" passHref>
       <a css={{ color: 'hsl(200,20%,50%)', cursor: 'pointer' }}>{'< Go Back'}</a>
       </Link>
-      <h1>Share an Url</h1>
+      <h1>Share an URL</h1>
 
       {slug && (
         <>

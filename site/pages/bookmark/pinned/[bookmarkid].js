@@ -9,7 +9,7 @@ import { useAuth } from '../../../lib/authentication';
 
 const ALL_QUERIES = gql`
   query AllQueries($bookmarkid:ID!) {
-      allPins(where:{bookmark:{id:$bookmarkid}}){
+      allPins(where:{bookmark:{id:$bookmarkid}},sortBy: created_DESC){
         id
         title
         body
